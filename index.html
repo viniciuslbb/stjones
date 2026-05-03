@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<!-- ST. JONES LANDING - corrigido para GitHub/Vercel + Supabase -->
+
 <html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>St. Jones — Burgers and Fries</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="./index_files/css2" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--blue:#1a73c8;--blue-dark:#0d5aa7;--white:#fff;--offwhite:#f5f5f5;--gray:#3d3d3d;--gray-mid:#6b6b6b;--gray-light:#e8e8e8;--yellow:#ffbc0d;--black:#292929}
@@ -426,6 +427,50 @@ img{max-width:100%;height:auto}
   .hero-h1{font-size:1.3rem}
   .app-banner-title{font-size:1.2rem}
 }
+
+
+/* Correções ST. JONES: mobile franquia + mapas */
+.map-frame{width:100%;height:150px;border:0;display:block}
+@media(max-width:768px){
+  .franquia-banner-grid{
+    grid-template-columns:1fr !important;
+    padding:1.6rem 1.1rem !important;
+    gap:1.2rem !important;
+    border-radius:16px !important;
+  }
+  .franquia-banner-grid h2{
+    font-size:1.45rem !important;
+    line-height:1.18 !important;
+  }
+  .franquia-banner-grid p{
+    font-size:.84rem !important;
+    max-width:100% !important;
+  }
+  .franquia-banner-grid > div:first-of-type > div:nth-of-type(2){
+    gap:.75rem !important;
+    justify-content:space-between !important;
+  }
+  .franquia-banner-grid > div:first-of-type > div:nth-of-type(2) > div{
+    flex:1 !important;
+    min-width:72px !important;
+  }
+  .franquia-banner-grid > div:first-of-type > div:nth-of-type(2) > div[style*="width:1px"]{
+    display:none !important;
+  }
+  .franquia-banner-grid button{
+    width:100% !important;
+    justify-content:center !important;
+    padding:.82rem 1rem !important;
+  }
+  .franquia-banner-grid > div:last-child{
+    gap:.65rem !important;
+  }
+  .franquia-banner-grid > div:last-child > div{
+    padding:.85rem .9rem !important;
+    gap:.75rem !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -562,7 +607,7 @@ img{max-width:100%;height:auto}
         <div class="admin-subsection" style="margin-bottom:1rem">
           <div class="admin-subsection-title"><span>1</span> Logo do topo (nav)</div>
           <div style="background:var(--blue);padding:1rem 1.5rem;border-radius:10px;display:inline-flex;align-items:center;margin-bottom:.8rem">
-            <img id="logoPreviewNav" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" style="height:44px;width:auto;object-fit:contain" alt="Logo nav">
+            <img id="logoPreviewNav" src="" style="height:44px;width:auto;object-fit:contain" alt="Logo nav">
           </div>
           <p style="font-size:.75rem;color:var(--gray-mid);margin-bottom:.8rem">Aparece no menu superior e na tela de login.</p>
           <div class="frow full">
@@ -583,7 +628,7 @@ img{max-width:100%;height:auto}
         <div class="admin-subsection">
           <div class="admin-subsection-title"><span>2</span> Logo do rodapé (footer)</div>
           <div style="background:var(--blue-dark);padding:1rem 1.5rem;border-radius:10px;display:inline-flex;align-items:center;margin-bottom:.8rem">
-            <img id="logoPreviewFooter" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" style="height:44px;width:auto;object-fit:contain" alt="Logo footer">
+            <img id="logoPreviewFooter" src="" style="height:44px;width:auto;object-fit:contain" alt="Logo footer">
           </div>
           <p style="font-size:.75rem;color:var(--gray-mid);margin-bottom:.8rem">Aparece no rodapé do site. Pode ser diferente do topo.</p>
           <div class="frow full">
@@ -963,7 +1008,7 @@ img{max-width:100%;height:auto}
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <img id="heroBgImg" class="hero-bg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" style="display:none">
+  <img id="heroBgImg" class="hero-bg" src="" alt="" style="display:none">
   <div class="hero-bg" id="heroFallback" style="background:linear-gradient(135deg,#0d2f52 0%,#1a73c8 100%)"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -1034,7 +1079,7 @@ img{max-width:100%;height:auto}
 <!-- APP BANNER -->
 <div class="sec-wrapper" style="background:#fff;padding-top:0">
   <div class="sec-inner">
-    <div style="background:var(--yellow);border-radius:20px;padding:3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;position:relative;overflow:hidden">
+    <div class="franquia-banner-grid" style="background:var(--yellow);border-radius:20px;padding:3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;position:relative;overflow:hidden">
 
       <!-- Detalhes decorativos -->
       <div style="position:absolute;top:-40px;right:30%;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none"></div>
@@ -1125,7 +1170,7 @@ img{max-width:100%;height:auto}
       <!-- OSASCO -->
       <div class="loja-card" style="padding:0;overflow:hidden;border-radius:12px;border:1px solid var(--gray-light);background:#fff;display:flex;flex-direction:column">
         <div style="width:100%;height:150px;overflow:hidden;position:relative;border-radius:0">
-          <iframe src="https://www.google.com/maps?q=Av.%20Pau%20Brasil%20264%20Osasco%20SP&output=embed" referrerpolicy="no-referrer-when-downgrade" width="100%" height="150" style="border:0;display:block" loading="lazy"></iframe>
+          <iframe src="https://www.google.com/maps?q=Av%20Pau%20Brasil%20264%20Cidade%20das%20Flores%20Osasco%20SP&output=embed" width="100%" height="150" class="map-frame" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           <a href="https://www.google.com/maps/search/Av+Pau+Brasil+264+Cidade+das+Flores+Osasco+SP" target="_blank" style="position:absolute;bottom:8px;right:8px;background:white;color:var(--blue);font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.15);letter-spacing:.04em">
             Abrir Maps ↗
           </a>
@@ -1153,7 +1198,7 @@ img{max-width:100%;height:auto}
       <!-- VILA MARIANA -->
       <div class="loja-card" style="padding:0;overflow:hidden;border-radius:12px;border:1px solid var(--gray-light);background:#fff;display:flex;flex-direction:column">
         <div style="width:100%;height:150px;overflow:hidden;position:relative;border-radius:0">
-          <iframe src="https://www.google.com/maps?q=Rua%20Franca%20Pinto%20193%20Vila%20Mariana%20Sao%20Paulo%20SP&output=embed" referrerpolicy="no-referrer-when-downgrade" width="100%" height="150" style="border:0;display:block" loading="lazy"></iframe>
+          <iframe src="https://www.google.com/maps?q=Rua%20Franca%20Pinto%20193%20Vila%20Mariana%20Sao%20Paulo%20SP&output=embed" width="100%" height="150" class="map-frame" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           <a href="https://www.google.com/maps/search/Rua+Franca+Pinto+193+Vila+Mariana+Sao+Paulo+SP" target="_blank" style="position:absolute;bottom:8px;right:8px;background:white;color:var(--blue);font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.15);letter-spacing:.04em">
             Abrir Maps ↗
           </a>
@@ -1181,7 +1226,7 @@ img{max-width:100%;height:auto}
       <!-- TATUAPÉ -->
       <div class="loja-card" style="padding:0;overflow:hidden;border-radius:12px;border:1px solid var(--gray-light);background:#fff;display:flex;flex-direction:column">
         <div style="width:100%;height:150px;overflow:hidden;position:relative;border-radius:0">
-          <iframe src="https://www.google.com/maps?q=Rua%20Coelho%20Lisboa%20501%20Tatuape%20Sao%20Paulo%20SP&output=embed" referrerpolicy="no-referrer-when-downgrade" width="100%" height="150" style="border:0;display:block" loading="lazy"></iframe>
+          <iframe src="https://www.google.com/maps?q=Rua%20Coelho%20Lisboa%20501%20Tatuape%20Sao%20Paulo%20SP&output=embed" width="100%" height="150" class="map-frame" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
           <a href="https://www.google.com/maps/search/Rua+Coelho+Lisboa+501+Tatuape+Sao+Paulo+SP" target="_blank" style="position:absolute;bottom:8px;right:8px;background:white;color:var(--blue);font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.15);letter-spacing:.04em">
             Abrir Maps ↗
           </a>
@@ -1343,74 +1388,87 @@ const DEF = {
 };
 
 let S = JSON.parse(JSON.stringify(DEF));
+try{
+  const s=localStorage.getItem('stjones4');
+  if(s){const parsed=JSON.parse(s);S=Object.assign(JSON.parse(JSON.stringify(DEF)),parsed);}
+}catch(e){}
 let _editCatId=null;
 
-// ─── SUPABASE CONFIG ─────────────────────────────────────────────────────────
-// Cole sua anon public key abaixo. A URL do projeto já está preenchida.
+// ─── SUPABASE: conteúdo + imagens persistentes ─────────────────────────────
 const SUPABASE_URL = 'https://tdlkqcxrgqplijukblvr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkbGtxY3hyZ3FwbGlqdWtibHZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NzQxMzUsImV4cCI6MjA5MzM1MDEzNX0.FkPxsdxk87ZjVYpF-mwPQMlyDAaUnnvfswfe9c87kwI';
 const SUPABASE_BUCKET = 'site-images';
-const SUPABASE_TABLE = 'site_content';
-const SUPABASE_ROW_ID = 'landing';
-const supabaseReady = !!(window.supabase && SUPABASE_ANON_KEY && !SUPABASE_ANON_KEY.includes('COLE_SUA_ANON_KEY'));
-const sb = supabaseReady ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let _syncTimer = null;
+let _syncing = false;
 
-function toast(m='Salvo!'){const t=document.getElementById('toast');if(!t)return; t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-
-async function carregarConteudoSupabase(){
-  if(!sb){
-    try{const local=localStorage.getItem('stjones4');if(local){S=Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(local));}}catch(e){}
-    return;
-  }
-  try{
-    const { data, error } = await sb.from(SUPABASE_TABLE).select('content').eq('id', SUPABASE_ROW_ID).maybeSingle();
-    if(error){console.warn('Supabase load error:', error); return;}
-    if(data && data.content){
-      S = Object.assign(JSON.parse(JSON.stringify(DEF)), data.content);
-      try{localStorage.setItem('stjones4', JSON.stringify(S));}catch(e){}
-    } else {
-      try{const local=localStorage.getItem('stjones4');if(local){S=Object.assign(JSON.parse(JSON.stringify(DEF)),JSON.parse(local));}}catch(e){}
-    }
-  }catch(e){console.warn('Supabase load failed:', e);}
+function isDataUrl(v){return typeof v === 'string' && v.indexOf('data:image/') === 0;}
+function extFromDataUrl(v){
+  const m = v.match(/^data:image\/(png|jpeg|jpg|webp|gif);base64,/i);
+  if(!m) return 'png';
+  return m[1].toLowerCase()==='jpeg'?'jpg':m[1].toLowerCase();
 }
-
-async function salvarConteudoSupabase(){
-  try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
-  if(!sb){console.warn('Supabase não configurado. Cole a anon key no SUPABASE_ANON_KEY.'); return;}
-  try{
-    const { error } = await sb.from(SUPABASE_TABLE).upsert({ id: SUPABASE_ROW_ID, content: S, updated_at: new Date().toISOString() });
-    if(error){console.error('Erro ao salvar no Supabase:', error); toast('Erro ao salvar no Supabase');}
-  }catch(e){console.error('Falha ao salvar no Supabase:', e); toast('Erro ao salvar');}
-}
-
-function save(){ salvarConteudoSupabase(); }
-
-function dataUrlToBlob(dataUrl){
-  const arr = dataUrl.split(',');
-  const mime = (arr[0].match(/:(.*?);/)||[])[1] || 'image/png';
-  const bstr = atob(arr[1]);
-  let n = bstr.length;
-  const u8arr = new Uint8Array(n);
-  while(n--) u8arr[n] = bstr.charCodeAt(n);
-  return new Blob([u8arr], {type:mime});
-}
-
-async function uploadBlobSupabase(blob, pasta='uploads'){
-  if(!sb) return null;
-  const ext = (blob.type && blob.type.includes('jpeg')) ? 'jpg' : 'png';
-  const nome = `${pasta}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const { error } = await sb.storage.from(SUPABASE_BUCKET).upload(nome, blob, { cacheControl:'3600', upsert:false, contentType:blob.type || 'image/png' });
-  if(error){ console.error('Erro upload Supabase:', error); toast('Erro no upload da imagem'); return null; }
-  const { data } = sb.storage.from(SUPABASE_BUCKET).getPublicUrl(nome);
+async function uploadDataUrlToSupabase(dataUrl, pathPrefix){
+  if(!supabaseClient || !isDataUrl(dataUrl)) return dataUrl;
+  const ext = extFromDataUrl(dataUrl);
+  const blob = await (await fetch(dataUrl)).blob();
+  const fileName = (pathPrefix || 'site') + '/' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+  const { error } = await supabaseClient.storage.from(SUPABASE_BUCKET).upload(fileName, blob, {
+    cacheControl: '3600',
+    upsert: true,
+    contentType: blob.type || ('image/' + ext)
+  });
+  if(error){ console.error('Erro upload Supabase:', error); return dataUrl; }
+  const { data } = supabaseClient.storage.from(SUPABASE_BUCKET).getPublicUrl(fileName);
   return data.publicUrl;
 }
-
-async function uploadDataUrlSupabase(dataUrl, pasta='uploads'){
-  if(!sb) return dataUrl;
-  const blob = dataUrlToBlob(dataUrl);
-  const url = await uploadBlobSupabase(blob, pasta);
-  return url || dataUrl;
+async function replaceDataUrls(obj, path){
+  if(Array.isArray(obj)){
+    for(let i=0;i<obj.length;i++) obj[i] = await replaceDataUrls(obj[i], (path||'item')+'-'+i);
+    return obj;
+  }
+  if(obj && typeof obj === 'object'){
+    for(const k of Object.keys(obj)){
+      if(isDataUrl(obj[k])) obj[k] = await uploadDataUrlToSupabase(obj[k], (path||'site') + '-' + k);
+      else obj[k] = await replaceDataUrls(obj[k], (path||'site') + '-' + k);
+    }
+    return obj;
+  }
+  return obj;
 }
+async function syncToSupabase(){
+  if(!supabaseClient || _syncing) return;
+  _syncing = true;
+  try{
+    await replaceDataUrls(S, 'landing');
+    try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
+    const { error } = await supabaseClient.from('site_content').upsert({
+      id: 'landing',
+      content: S,
+      updated_at: new Date().toISOString()
+    });
+    if(error) console.error('Erro ao salvar conteúdo no Supabase:', error);
+  }catch(e){ console.error('Falha ao sincronizar com Supabase:', e); }
+  _syncing = false;
+}
+async function loadFromSupabase(){
+  if(!supabaseClient) return;
+  try{
+    const { data, error } = await supabaseClient.from('site_content').select('content').eq('id','landing').maybeSingle();
+    if(error){ console.error('Erro ao carregar Supabase:', error); return; }
+    if(data && data.content){
+      S = Object.assign(JSON.parse(JSON.stringify(DEF)), data.content);
+      try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
+      renderSite();
+    }
+  }catch(e){ console.error('Falha ao carregar Supabase:', e); }
+}
+function save(){
+  try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(syncToSupabase, 350);
+}
+function toast(m='Salvo!'){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
 // ─── DRAWER ──────────────────────────────────────────────────────────────────
 function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawerOverlay').classList.add('open');document.body.style.overflow='hidden';}
@@ -1571,7 +1629,7 @@ function renderAdmin(){
       </div>
       <div class="frow">
         <div class="fgroup"><label>Linha 2 (negrito)</label><input type="text" id="bef-l2-${b.id}" value="${b.line2}"></div>
-        <div class="fgroup"><label>Foto (substitui emoji)</label><div class="upload-box" style="padding:.8rem"><input type="file" accept="image/*" onchange="prevImg(event,'befPrev${b.id}','_befImg${b.id}')"><strong style="font-size:.6rem">Upload foto</strong></div></div>
+        <div class="fgroup"><label>Foto (substitui emoji)</label><div class="upload-box" style="padding:.8rem"><input type="file" accept="image/*" onchange="(function(e){const r=new FileReader();r.onload=ev=>{document.getElementById('befPrev${b.id}').innerHTML='<img src=\\''+ev.target.result+'\\'>';window['_befImg${b.id}']=ev.target.result;};r.readAsDataURL(e.target.files[0]);})(event)"><strong style="font-size:.6rem">Upload foto</strong></div></div>
       </div>
       <div id="befPrev${b.id}"></div>
       <button class="btn-save" style="margin-top:.5rem" onclick="saveBenef(${b.id})">Salvar benefício ${b.id}</button>
@@ -1753,11 +1811,11 @@ function togFaq(btn,i){
 function prevLogoNav(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=async ev=>{
+  r.onload=ev=>{
+    window._logoNavImg=ev.target.result;
     document.getElementById('logoNavPrev').innerHTML=
       '<div style="background:var(--blue);padding:.6rem;border-radius:8px;display:inline-flex;align-items:center">' +
       '<img src="'+ev.target.result+'" style="height:36px;width:auto;object-fit:contain"></div>';
-    window._logoNavImg = await uploadDataUrlSupabase(ev.target.result, 'logos');
   };
   r.readAsDataURL(f);
 }
@@ -1765,11 +1823,11 @@ function prevLogoNav(e){
 function prevLogoFooter(e){
   const f=e.target.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=async ev=>{
+  r.onload=ev=>{
+    window._logoFooterImg=ev.target.result;
     document.getElementById('logoFooterPrev').innerHTML=
       '<div style="background:var(--blue-dark);padding:.6rem;border-radius:8px;display:inline-flex;align-items:center">' +
       '<img src="'+ev.target.result+'" style="height:36px;width:auto;object-fit:contain"></div>';
-    window._logoFooterImg = await uploadDataUrlSupabase(ev.target.result, 'logos');
   };
   r.readAsDataURL(f);
 }
@@ -2024,7 +2082,6 @@ function applySociais(){
   }).join('');
   var r1 = document.getElementById('footerSocialRow');
   var r2 = document.getElementById('footerSocialRow2');
-  if(r1) r1.innerHTML = markup;
   if(r2) r2.innerHTML = markup;
 }
 
@@ -2064,6 +2121,10 @@ function renderAdminRodape(){
 function renderSite(){
   applyHero();applyLogo();applyLogoFooter();renderCats();renderBanners();renderProdutos();renderBeneficios();applyApp();applyBrand();applyCta();buildFaq();applyLojas();applySociais();
 }
+
+// Renderiza conteúdo local/padrão e depois busca o que estiver salvo no Supabase.
+renderSite();
+loadFromSupabase();
 
 </script>
 <!-- MODAL FRANQUIAS -->
@@ -2297,7 +2358,7 @@ function updatePreviews(srcCanvas){
   drawPreview('prevRect', 120, 64, false);
 }
 
-async function applyEditedImg(){
+function applyEditedImg(){
   if(!_ie.img) return;
   var x=_ie.cropX, y=_ie.cropY, w=_ie.cropW, h=_ie.cropH;
   var srcCanvas = document.getElementById('imgEditorCanvas');
@@ -2311,9 +2372,7 @@ async function applyEditedImg(){
   octx.drawImage(srcCanvas, x, y, w, h, 0, 0, w, h);
   if(_ie.shape==='circle') octx.restore();
   var dataUrl = out.toDataURL('image/png');
-  toast(sb ? 'Enviando imagem...' : 'Imagem aplicada');
-  var finalUrl = await uploadDataUrlSupabase(dataUrl, _ie.callbackKey || 'uploads');
-  if(_ie.callback) _ie.callback(finalUrl, _ie.callbackKey);
+  if(_ie.callback) _ie.callback(dataUrl, _ie.callbackKey);
   closeImgEditor();
 }
 
@@ -2556,12 +2615,5 @@ function enviarFranquia(){
   </div>
 </div>
 
-
-<script>
-window.addEventListener('DOMContentLoaded', async function(){
-  await carregarConteudoSupabase();
-  renderSite();
-});
-</script>
 
 </body></html>
