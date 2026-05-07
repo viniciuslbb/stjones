@@ -2360,17 +2360,47 @@ function updatePreviews(srcCanvas){
 
 function applyEditedImg(){
   if(!_ie.img) return;
-  var x=_ie.cropX, y=_ie.cropY, w=_ie.cropW, h=_ie.cropH;
-  var srcCanvas = document.getElementById('imgEditorCanvas');
+
+  var x = _ie.cropX, y = _ie.cropY, w = _ie.cropW, h = _ie.cropH;
+  var naturalW = _ie.img.naturalWidth || _ie.img.width;
+  var naturalH = _ie.img.naturalHeight || _ie.img.height;
+
+  // A tela do editor continua sendo 640x320, mas a saída agora é gerada
+  // em alta resolução proporcional à imagem original.
+  var displayW = 640;
+  var displayH = 320;
+  var qualityScale = Math.max(naturalW / displayW, naturalH / displayH, 1);
+
   var out = document.createElement('canvas');
-  out.width = w; out.height = h;
+  out.width = Math.max(1, Math.round(w * qualityScale));
+  out.height = Math.max(1, Math.round(h * qualityScale));
+
   var octx = out.getContext('2d');
-  if(_ie.shape==='circle'){
-    octx.save(); octx.beginPath();
-    octx.arc(w/2,h/2,Math.min(w,h)/2,0,Math.PI*2); octx.clip();
+  octx.imageSmoothingEnabled = true;
+  octx.imageSmoothingQuality = 'high';
+
+  if(_ie.shape === 'circle'){
+    octx.save();
+    octx.beginPath();
+    octx.arc(out.width / 2, out.height / 2, Math.min(out.width, out.height) / 2, 0, Math.PI * 2);
+    octx.clip();
   }
-  octx.drawImage(srcCanvas, x, y, w, h, 0, 0, w, h);
-  if(_ie.shape==='circle') octx.restore();
+
+  octx.save();
+  octx.scale(qualityScale, qualityScale);
+  octx.translate(-x, -y);
+  octx.filter = 'brightness(' + (100 + _ie.bright) + '%)';
+  octx.translate(displayW / 2 + _ie.offsetX, displayH / 2 + _ie.offsetY);
+  octx.rotate(_ie.rotate * Math.PI / 180);
+
+  var scale = _ie.zoom / 100;
+  var drawW = naturalW * scale;
+  var drawH = naturalH * scale;
+  octx.drawImage(_ie.img, -drawW / 2, -drawH / 2, drawW, drawH);
+  octx.restore();
+
+  if(_ie.shape === 'circle') octx.restore();
+
   var dataUrl = out.toDataURL('image/png');
   if(_ie.callback) _ie.callback(dataUrl, _ie.callbackKey);
   closeImgEditor();
