@@ -43,7 +43,7 @@ body{background:var(--white);color:var(--black);font-family:"DM Sans",sans-serif
 .topnav-row2{display:none}
 .topnav-left{display:flex;align-items:center;gap:1.2rem}
 .hbg-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;color:#fff}
-.topnav-logo{height:64px;width:auto;object-fit:contain;cursor:pointer}
+.topnav-logo{height:82px;width:auto;object-fit:contain;cursor:pointer}
 .topnav-links{display:flex;gap:0}
 .topnav-link{padding:.4rem 1rem;font-size:.88rem;color:rgba(255,255,255,.9);text-decoration:none;border-radius:4px;transition:all .2s;white-space:nowrap}
 .topnav-link:hover{color:#fff;background:rgba(255,255,255,.1)}
@@ -346,7 +346,7 @@ img{max-width:100%;height:auto}
 
   /* NAV */
   .topnav-row1{padding:1.2rem 1.2rem}
-  .topnav-logo{height:38px}
+  .topnav-logo{height:52px}
   .btn-entrar{padding:.38rem .9rem;font-size:.78rem}
 
   /* HERO */
@@ -368,7 +368,7 @@ img{max-width:100%;height:auto}
 
   /* BRAND */
   .brand-grid{grid-template-columns:1fr;gap:1.5rem}
-  .brand-img-wrap{display:none}
+  .brand-img-wrap{display:flex;width:100%;margin-top:1rem}
 
   /* BANNERS */
   .banners3{grid-template-columns:1fr;gap:.8rem}
@@ -468,6 +468,54 @@ img{max-width:100%;height:auto}
   .franquia-banner-grid > div:last-child > div{
     padding:.85rem .9rem !important;
     gap:.75rem !important;
+  }
+}
+
+
+/* Correções finais ST. JONES: categorias centralizadas + foto visível no mobile */
+.cats-inner{
+  justify-content:center;
+  width:100%;
+  margin:0 auto;
+}
+
+@media(max-width:768px){
+  .cats-bar{
+    overflow-x:auto;
+  }
+
+  .cats-inner{
+    justify-content:center !important;
+    align-items:center !important;
+    min-width:100% !important;
+    width:max-content;
+    margin:0 auto !important;
+    padding:0 .6rem !important;
+  }
+
+  .cat-item{
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  .brand-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .brand-img-wrap{
+    display:flex !important;
+    width:100% !important;
+    aspect-ratio:4/3 !important;
+    margin:1.2rem auto 0 !important;
+    border-radius:14px !important;
+    overflow:hidden !important;
+  }
+
+  .brand-img-wrap img{
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+    object-fit:cover !important;
   }
 }
 
