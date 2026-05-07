@@ -1,0 +1,2726 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)file:///C:/Users/User/Downloads/index_8.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>St. Jones — Burgers and Fries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="file:///C:/Users/User/Downloads/index_files/css2" rel="stylesheet">
+<script src="./index_files/supabase-js@2"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--blue:#1a73c8;--blue-dark:#0d5aa7;--white:#fff;--offwhite:#f5f5f5;--gray:#3d3d3d;--gray-mid:#6b6b6b;--gray-light:#e8e8e8;--yellow:#ffbc0d;--black:#292929}
+html{scroll-behavior:smooth}
+body{background:var(--white);color:var(--black);font-family:"DM Sans",sans-serif;overflow-x:hidden}
+
+/* DRAWER */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;opacity:0;visibility:hidden;transition:all .3s}
+.drawer-overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:340px;max-width:90vw;background:#fff;z-index:600;transform:translateX(-100%);transition:transform .3s ease;overflow-y:auto;display:flex;flex-direction:column}
+.drawer.open{transform:translateX(0)}
+.drawer-header{padding:1rem 1.2rem;display:flex;align-items:center;border-bottom:1px solid var(--gray-light)}
+.drawer-close{width:34px;height:34px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--gray);border-radius:50%}
+.drawer-close:hover{background:#fff}
+.drawer-nav{padding:.8rem 0}
+.d-link{display:flex;align-items:center;gap:.9rem;padding:.9rem 1.2rem;font-size:.95rem;color:var(--black);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;transition:background .15s}
+.d-link:hover{background:#fff}
+.d-link svg{width:22px;height:22px;flex-shrink:0}
+.d-section-btn{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.2rem;font-size:.95rem;font-weight:700;color:var(--black);cursor:pointer;border:none;background:none;width:100%;transition:background .15s}
+.d-section-btn:hover{background:#fff}
+.d-section-btn .arr{transition:transform .2s}
+.d-section-btn.open .arr{transform:rotate(180deg)}
+.d-divider{border:none;border-top:1px solid var(--gray-light);margin:.4rem 0}
+.drawer-app{margin-top:auto;padding:1.5rem 1.2rem;border-top:1px solid var(--gray-light)}
+.drawer-app-title{font-size:1.3rem;font-weight:300;color:var(--black)}
+.drawer-app-title strong{display:block;font-weight:700}
+.drawer-app-btns{display:flex;gap:.6rem;margin-top:.9rem;flex-wrap:wrap}
+.app-btn{display:flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;border:1.5px solid var(--gray-light);border-radius:999px;font-size:.82rem;color:var(--black);background:none;cursor:pointer;text-decoration:none;transition:border-color .2s}
+.app-btn:hover{border-color:var(--blue)}
+
+/* NAV */
+.topnav{position:absolute;top:0;left:0;right:0;z-index:300;background:transparent;height:auto;display:flex;flex-direction:column;padding:0}
+.topnav-row1{display:flex;align-items:center;justify-content:space-between;padding:2rem 2.5rem;gap:1.4rem}
+.topnav-row2{display:none}
+.topnav-left{display:flex;align-items:center;gap:1.2rem}
+.hbg-btn{background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;color:#fff}
+.topnav-logo{height:64px;width:auto;object-fit:contain;cursor:pointer}
+.topnav-links{display:flex;gap:0}
+.topnav-link{padding:.4rem 1rem;font-size:.88rem;color:rgba(255,255,255,.9);text-decoration:none;border-radius:4px;transition:all .2s;white-space:nowrap}
+.topnav-link:hover{color:#fff;background:rgba(255,255,255,.1)}
+.topnav-right{flex-shrink:0}
+.btn-entrar{padding:.42rem 1.2rem;background:var(--yellow);color:var(--black);font-size:.82rem;font-weight:700;border:none;border-radius:4px;cursor:pointer;text-decoration:none;transition:background .2s}
+.btn-entrar:hover{background:#e6aa00}
+
+/* HERO */
+.hero{margin-top:0;position:relative;min-height:520px;display:flex;align-items:flex-end;overflow:hidden;padding-bottom:4rem}
+.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.68) 0%,rgba(0,0,0,.45) 45%,rgba(0,0,0,.05) 100%);z-index:1}
+.hero-content{position:relative;z-index:2;padding:0 2rem 0 2rem;max-width:600px}
+.hero-h1{font-size:2.4rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:1.2rem}
+.hero-actions{display:flex;gap:.7rem;flex-wrap:wrap}
+.hero-btn{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.2rem;border-radius:999px;font-size:.82rem;font-weight:700;cursor:pointer;text-decoration:none;border:none;color:var(--black);background:rgba(255,255,255,.92);transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.hero-btn:hover{background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+
+/* CATS */
+.cats-bar{background:#fff;border-bottom:1px solid var(--gray-light);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.cats-bar::-webkit-scrollbar{display:none}
+.cats-inner{display:flex;padding:0 1.5rem;min-width:max-content}
+.cat-item{display:flex;flex-direction:column;align-items:center;gap:.35rem;padding:.6rem .9rem;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .2s;min-width:76px}
+.cat-item:hover{border-bottom-color:var(--blue)}
+.cat-item.active{border-bottom-color:var(--blue)}
+.cat-icon-wrap{width:50px;height:50px;border-radius:50%;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:1.5rem;transition:background .2s}
+.cat-item.active .cat-icon-wrap{background:#fff}
+.cat-icon-wrap img{width:100%;height:100%;object-fit:cover}
+.cat-label{font-size:.65rem;color:var(--gray-mid);text-align:center;line-height:1.2;max-width:70px}
+.cat-item.active .cat-label{color:var(--blue);font-weight:700}
+
+/* SECTIONS */
+.sec-wrapper{padding:2.5rem 2rem}
+.sec-inner{max-width:1140px;margin:0 auto}
+.sec-title{font-size:1.5rem;font-weight:700;color:var(--black);margin-bottom:.3rem}
+.sec-sub{font-size:.9rem;color:var(--gray-mid);margin-bottom:1.5rem}
+
+/* BRAND */
+.brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.brand-img-wrap{width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;font-size:3rem}
+.brand-img-wrap img{width:100%;height:100%;object-fit:cover}
+
+/* BANNERS 3 */
+.banners3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.b3{border-radius:12px;overflow:hidden;position:relative;cursor:pointer;background:#1a4a80;min-height:200px;display:flex;align-items:flex-end}
+.b3-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.b3:hover .b3-img{transform:scale(1.04)}
+.b3-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%)}
+.b3-cnt{position:relative;z-index:1;padding:1.1rem}
+.b3-tag{display:inline-block;background:var(--yellow);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .55rem;color:#000;margin-bottom:.35rem;border-radius:3px;font-weight:700}
+.b3-title{font-size:1.15rem;font-weight:700;color:#fff;line-height:1.2}
+.b3-sub{font-size:.75rem;color:rgba(255,255,255,.72);margin-top:.2rem}
+.b3-empty{background:#fff;border:2px dashed rgba(37,99,168,.3);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;color:rgba(37,99,168,.35);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;min-height:200px;cursor:pointer;transition:all .2s}
+.b3-empty:hover{border-color:var(--blue);color:var(--blue)}
+
+/* PRODUCTS */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem}
+.prod-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--gray-light);cursor:pointer;transition:box-shadow .2s,transform .2s}
+.prod-card:hover{box-shadow:0 8px 28px rgba(26,115,200,.12);transform:translateY(-3px)}
+.prod-img-w{width:100%;aspect-ratio:1;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:2.5rem}
+.prod-img-w img{width:100%;height:100%;object-fit:cover}
+.prod-info{padding:.85rem .95rem 1rem}
+.prod-cat{font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:.25rem}
+.prod-name{font-size:.98rem;font-weight:700;color:var(--black);line-height:1.2}
+.prod-desc{font-size:.73rem;color:var(--gray-mid);line-height:1.5;margin-top:.25rem}
+.prod-price{font-size:1.15rem;font-weight:700;color:var(--blue);margin-top:.45rem}
+.prod-empty{background:#fff;border:2px dashed rgba(37,99,168,.25);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.35rem;color:rgba(37,99,168,.35);font-size:.7rem;text-transform:uppercase;min-height:240px;cursor:pointer;transition:all .2s}
+.prod-empty:hover{border-color:var(--blue);color:var(--blue)}
+
+/* BENEFICIOS */
+.benef-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.benef-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.7rem}
+.benef-icon-wrap{width:96px;height:96px;border-radius:50%;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;font-size:2.5rem;cursor:pointer;transition:all .2s;border:2px dashed transparent}
+.benef-icon-wrap:hover{border-color:var(--blue)}
+.benef-icon-wrap img{width:100%;height:100%;object-fit:cover}
+.benef-text{font-size:.9rem;color:var(--black);line-height:1.5;max-width:200px}
+.benef-text strong{display:block;font-weight:700}
+
+/* APP BANNER */
+.app-banner{background:var(--yellow);border-radius:16px;padding:3rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+.app-banner-title{font-size:1.9rem;font-weight:700;color:var(--black);line-height:1.2;margin-bottom:.7rem}
+.app-banner-desc{font-size:.88rem;color:var(--black);opacity:.75;line-height:1.6}
+.app-banner-img-wrap{width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;font-size:5rem;cursor:pointer;border:2px dashed rgba(0,0,0,.15);transition:border-color .2s}
+.app-banner-img-wrap:hover{border-color:rgba(0,0,0,.4)}
+.app-banner-img-wrap img{width:100%;height:100%;object-fit:cover}
+.app-btns-row{display:flex;gap:.7rem;margin-top:1.3rem;flex-wrap:wrap}
+
+/* LOJAS */
+.lojas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.loja-card{display:block;padding:1.4rem;border:1px solid var(--gray-light);border-radius:12px;text-decoration:none;color:var(--black);transition:box-shadow .2s;background:#fff}
+.loja-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.09)}
+.loja-plat{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:.45rem}
+.loja-plat-logo{height:22px;width:auto;object-fit:contain;margin-bottom:.45rem;display:block}
+.loja-plat-logo.ifood{height:28px}
+.loja-nome{font-size:1.15rem;font-weight:700;margin-bottom:.3rem}
+.loja-desc{font-size:.8rem;color:var(--gray-mid)}
+.loja-cta{margin-top:.9rem;font-size:.78rem;color:var(--blue);font-weight:700}
+
+/* FAQ */
+.faq-title{font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:1.8rem;color:var(--black)}
+.faq-item{border-bottom:1px solid var(--gray-light)}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;font-size:.93rem;color:var(--black);cursor:pointer;border:none;background:none;width:100%;text-align:left;gap:1rem}
+.faq-q svg{flex-shrink:0;transition:transform .2s}
+.faq-q.open svg{transform:rotate(180deg)}
+.faq-a{font-size:.86rem;color:var(--gray-mid);line-height:1.6;padding-bottom:.9rem;display:none}
+.faq-a.open{display:block}
+
+/* CTA */
+.cta-strip{background:var(--yellow);padding:1.4rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.cta-text{font-size:.95rem;color:var(--black);line-height:1.5}
+.cta-text strong{display:block;font-weight:700}
+.btn-reg{padding:.55rem 1.4rem;border:2px solid var(--black);background:transparent;color:var(--black);font-size:.83rem;font-weight:700;border-radius:4px;cursor:pointer;transition:all .2s}
+.btn-reg:hover{background:var(--black);color:#fff}
+
+/* FOOTER */
+.site-footer{background:#fff;border-top:1px solid var(--gray-light);padding:3rem 2rem 1.5rem}
+.footer-top{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:2.5rem;max-width:1140px;margin:0 auto;padding-bottom:2rem;border-bottom:1px solid var(--gray-light)}
+.footer-logo-img{height:55px;width:auto;object-fit:contain;display:block;margin-bottom:.8rem}
+.fcol-title{font-size:.78rem;font-weight:700;color:var(--black);margin-bottom:.7rem;text-transform:uppercase;letter-spacing:.05em}
+.fcol ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.fcol ul li a{font-size:.8rem;color:var(--gray-mid);text-decoration:none;transition:color .2s}
+.fcol ul li a:hover{color:var(--black)}
+.social-row{display:flex;gap:.6rem;margin-top:.5rem}
+.soc-btn{width:34px;height:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;text-decoration:none;color:var(--gray);font-size:.78rem;font-weight:700}
+.soc-btn:hover{background:var(--blue);color:#fff}
+.footer-bottom{max-width:1140px;margin:1.1rem auto 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
+.footer-bottom p{font-size:.72rem;color:var(--gray-mid)}
+.footer-bottom-links{display:flex;gap:1.4rem}
+.footer-bottom-links a{font-size:.72rem;color:var(--gray-mid);text-decoration:none}
+.footer-bottom-links a:hover{color:var(--black)}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;padding:.6rem 1.3rem;font-size:.8rem;font-weight:700;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;border-radius:8px;box-shadow:0 8px 24px rgba(26,115,200,.3)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* LOGIN */
+.login-overlay{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.login-overlay.open{display:flex}
+.login-box{background:#fff;border-radius:16px;padding:2.3rem;width:100%;max-width:340px;text-align:center}
+.login-logo{height:72px;width:auto;margin:0 auto .7rem;display:block}
+.login-sub{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-mid);margin-bottom:1.5rem}
+.lfg{margin-bottom:.8rem;text-align:left}
+.lfg label{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-mid);display:block;margin-bottom:.35rem}
+.lfg input{width:100%;background:#fff;border:1.5px solid var(--gray-light);color:var(--black);padding:.65rem .9rem;font-family:"DM Sans",sans-serif;font-size:.9rem;outline:none;border-radius:8px;transition:border-color .2s}
+.lfg input:focus{border-color:var(--blue)}
+.login-err{font-size:.72rem;color:#dc2626;margin-top:.35rem;display:none}
+.btn-login{width:100%;margin-top:.7rem;padding:.75rem;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-login:hover{background:var(--blue-dark)}
+
+/* ADMIN */
+.admin-overlay{position:fixed;inset:0;z-index:1000;display:none;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.admin-overlay.open{display:flex}
+.admin-modal{background:#fff;border-radius:16px;width:100%;max-width:980px;height:88vh;margin:auto;box-shadow:0 32px 80px rgba(0,0,0,.3);display:flex;overflow:hidden}
+.admin-sidebar{width:210px;flex-shrink:0;background:var(--blue-dark);display:flex;flex-direction:column;border-radius:16px 0 0 16px;overflow-y:auto}
+.admin-sidebar-logo{padding:1.4rem 1.2rem 1rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.admin-sidebar-logo p{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.2rem}
+.admin-sidebar-logo strong{font-size:.95rem;color:#fff;font-weight:700}
+.admin-sidebar-menu{padding:.6rem 0;flex:1}
+.admin-tab{display:flex;align-items:center;gap:.7rem;width:100%;padding:.7rem 1.2rem;font-size:.78rem;color:rgba(255,255,255,.6);cursor:pointer;border:none;background:none;font-family:"DM Sans",sans-serif;text-align:left;transition:all .2s;border-left:3px solid transparent;white-space:nowrap}
+.admin-tab svg{flex-shrink:0;opacity:.7}
+.admin-tab:hover{color:#fff;background:rgba(255,255,255,.07);border-left-color:rgba(255,255,255,.3)}
+.admin-tab.active{color:#fff;background:rgba(255,255,255,.12);border-left-color:var(--yellow);font-weight:600}
+.admin-tab.active svg{opacity:1}
+.admin-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.admin-hdr{padding:1rem 1.4rem;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.admin-hdr-title{font-size:1rem;font-weight:700;color:var(--black)}
+.admin-hdr-sub{font-size:.75rem;color:var(--gray-mid);margin-top:.1rem}
+.admin-x{background:none;border:1px solid var(--gray-light);color:var(--gray-mid);width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:.9rem;transition:all .2s}
+.admin-x:hover{border-color:#dc2626;color:#dc2626}
+.admin-body{padding:1.4rem;flex:1;overflow-y:auto}
+.admin-sec{display:none}
+.admin-sec.active{display:block}
+.admin-tabs{display:none}
+.asec-label{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:1rem;font-weight:700}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-bottom:.7rem}
+.frow.full{grid-template-columns:1fr}
+.frow.tri{grid-template-columns:1fr 1fr 1fr}
+.fgroup{display:flex;flex-direction:column;gap:.28rem}
+.fgroup label{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-mid)}
+.fgroup input,.fgroup textarea,.fgroup select{background:#fff;border:1.5px solid var(--gray-light);color:var(--black);padding:.58rem .85rem;font-family:"DM Sans",sans-serif;font-size:.86rem;outline:none;border-radius:8px;transition:border-color .2s;width:100%}
+.fgroup input:focus,.fgroup textarea:focus,.fgroup select:focus{border-color:var(--blue)}
+.fgroup textarea{resize:vertical;min-height:65px}
+.upload-box{border:2px dashed rgba(37,99,168,.3);padding:1.4rem;text-align:center;cursor:pointer;border-radius:10px;position:relative;background:#eef4fb;transition:border-color .2s}
+.upload-box:hover{border-color:var(--blue)}
+.upload-box input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-box strong{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:.25rem}
+.upload-box p{font-size:.72rem;color:var(--gray-mid)}
+.uprev img{width:100%;max-height:80px;object-fit:cover;border-radius:8px;margin-top:.6rem;border:1px solid var(--gray-light)}
+.btn-save{padding:.6rem 1.6rem;background:var(--blue);color:#fff;border:none;font-family:"DM Sans",sans-serif;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:background .2s;margin-top:.9rem}
+.btn-save:hover{background:var(--blue-dark)}
+.btn-add-item{padding:.42rem .85rem;background:none;border:1.5px solid rgba(37,99,168,.3);color:var(--blue);font-family:"DM Sans",sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border-radius:8px;transition:all .2s;display:inline-flex;align-items:center;gap:.35rem;margin-bottom:.9rem}
+.btn-add-item:hover{background:var(--blue);color:#fff}
+.ilist{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.9rem}
+.irow{display:flex;align-items:center;gap:.55rem;padding:.6rem .85rem;background:#fff;border:1px solid var(--gray-light);border-radius:8px}
+.irow-thumb{width:38px;height:38px;border-radius:8px;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--blue);overflow:hidden}
+.irow-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.irow-info{flex:1}
+.irow-name{font-size:.85rem;color:var(--black);font-weight:700}
+.irow-meta{font-size:.7rem;color:var(--gray-mid)}
+.irow-del{background:none;border:1px solid var(--gray-light);color:var(--gray-mid);width:26px;height:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:.78rem;transition:all .2s;flex-shrink:0}
+.irow-del:hover{border-color:#dc2626;color:#dc2626}
+.divln{border:none;border-top:1px solid var(--gray-light);margin:1rem 0}
+.admin-subsection{background:#fff;border-radius:10px;padding:1rem;margin-bottom:1rem}
+.admin-subsection-title{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--black);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
+.admin-subsection-title span{background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.6rem;flex-shrink:0}
+
+
+
+/* ── MODAL FRANQUIAS ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.3)}
+.modal-header{padding:1.5rem 1.5rem 0}
+.modal-tag{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:.4rem}
+.modal-title{font-size:1.4rem;font-weight:700;color:var(--black);margin-bottom:.3rem}
+.modal-sub{font-size:.85rem;color:var(--gray-mid);line-height:1.5;margin-bottom:1.2rem}
+.modal-divider{border:none;border-top:1px solid var(--gray-light);margin:0 1.5rem}
+.modal-body{padding:1.2rem 1.5rem 1.5rem}
+.modal-close{position:absolute;top:1rem;right:1rem;background:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--gray-mid);transition:all .2s}
+.modal-close:hover{background:var(--gray-light);color:var(--black)}
+.modal-header-wrap{position:relative}
+.frm-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.8rem}
+.frm-row.full{grid-template-columns:1fr}
+.frm-group{display:flex;flex-direction:column;gap:.3rem}
+.frm-group label{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-mid);font-weight:500}
+.frm-group input,.frm-group select,.frm-group textarea{background:#fff;border:1.5px solid var(--gray-light);color:var(--black);padding:.65rem .9rem;font-family:"DM Sans",sans-serif;font-size:.9rem;outline:none;border-radius:8px;transition:border-color .2s;width:100%}
+.frm-group input:focus,.frm-group select:focus,.frm-group textarea:focus{border-color:var(--blue)}
+.frm-group textarea{resize:vertical;min-height:90px}
+.btn-franquia{width:100%;padding:.85rem;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;transition:background .2s;margin-top:.5rem;letter-spacing:.04em}
+.btn-franquia:hover{background:var(--blue-dark)}
+.modal-success{display:none;text-align:center;padding:2rem 1rem}
+.modal-success-icon{width:60px;height:60px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.8rem}
+.modal-success h3{font-size:1.2rem;font-weight:700;color:var(--black);margin-bottom:.5rem}
+.modal-success p{font-size:.88rem;color:var(--gray-mid);line-height:1.6}
+.capital-options{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.3rem}
+.capital-option{display:none}
+.capital-option+label{display:flex;align-items:center;justify-content:center;padding:.55rem .5rem;border:1.5px solid var(--gray-light);border-radius:8px;font-size:.78rem;color:var(--gray-mid);cursor:pointer;transition:all .2s;text-align:center}
+.capital-option:checked+label{border-color:var(--blue);background:#EBF2FA;color:var(--blue);font-weight:600}
+
+@keyframes pulse-badge{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(1.04)}}
+
+/* ── POPUPS RODAPÉ ── */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1500;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.popup-overlay.open{display:flex}
+.popup-box{background:#fff;border-radius:16px;width:100%;max-width:580px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.25);display:flex;flex-direction:column}
+.popup-header{padding:1.4rem 1.5rem 0;position:relative}
+.popup-tag{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:.3rem}
+.popup-title{font-size:1.4rem;font-weight:700;color:var(--black);margin-bottom:.8rem}
+.popup-close{position:absolute;top:1.2rem;right:1.2rem;background:#fff;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--gray-mid);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.popup-close:hover{background:var(--gray-light);color:var(--black)}
+.popup-divider{border:none;border-top:1px solid var(--gray-light);margin:0 1.5rem}
+.popup-body{padding:1.2rem 1.5rem 1.5rem;flex:1}
+.popup-text{font-size:.92rem;color:var(--gray-mid);line-height:1.8;white-space:pre-wrap}
+.popup-loja-card{background:#fff;border-radius:10px;padding:1rem 1.2rem;margin-bottom:.8rem;display:flex;align-items:flex-start;gap:1rem}
+.popup-loja-icon{width:38px;height:38px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.popup-loja-nome{font-size:.95rem;font-weight:700;color:var(--black);margin-bottom:.2rem}
+.popup-loja-info{font-size:.78rem;color:var(--gray-mid);line-height:1.6}
+.popup-loja-links{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.popup-loja-btn{font-size:.7rem;font-weight:600;padding:.3rem .8rem;border-radius:6px;text-decoration:none;border:1.5px solid var(--blue);color:var(--blue);transition:all .2s}
+.popup-loja-btn:hover{background:var(--blue);color:#fff}
+.popup-loja-btn.primary{background:var(--blue);color:#fff}
+.popup-loja-btn.primary:hover{background:var(--blue-dark)}
+.contact-form .frm-group{margin-bottom:.8rem}
+.popup-success{text-align:center;padding:1.5rem 0}
+.popup-success-icon{width:56px;height:56px;border-radius:50%;background:#EAF3DE;display:flex;align-items:center;justify-content:center;margin:0 auto .8rem;font-size:1.6rem}
+
+/* ── IMAGE EDITOR ── */
+.img-editor-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(8px)}
+.img-editor-overlay.open{display:flex}
+.img-editor-box{background:#1a1a1a;border-radius:16px;width:100%;max-width:700px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.img-editor-header{padding:1rem 1.4rem;background:#111;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08)}
+.img-editor-title{font-size:.95rem;font-weight:700;color:#fff}
+.img-editor-close{background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.6);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.img-editor-close:hover{background:rgba(220,38,38,.3);color:#fff}
+.img-editor-canvas-wrap{position:relative;background:#0a0a0a;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:320px}
+.img-editor-canvas{cursor:grab;user-select:none;display:block;max-width:100%}
+.img-editor-canvas:active{cursor:grabbing}
+.img-editor-overlay-guide{position:absolute;inset:0;pointer-events:none}
+.img-editor-controls{padding:1.2rem 1.4rem;background:#111;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:.8rem}
+.img-ctrl-row{display:flex;align-items:center;gap:.8rem}
+.img-ctrl-label{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);width:60px;flex-shrink:0}
+.img-ctrl-row input[type=range]{flex:1;accent-color:var(--blue);height:4px;cursor:pointer}
+.img-ctrl-val{font-size:.75rem;color:rgba(255,255,255,.6);width:44px;text-align:right;flex-shrink:0}
+.img-editor-btns{display:flex;gap:.6rem;padding:0 1.4rem 1.2rem;background:#111}
+.btn-crop-shapes{display:flex;gap:.4rem}
+.btn-crop-shape{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);padding:.4rem .7rem;border-radius:6px;cursor:pointer;font-size:.7rem;transition:all .2s}
+.btn-crop-shape.active{border-color:var(--blue);color:var(--blue);background:rgba(26,115,200,.15)}
+.btn-apply-img{flex:1;padding:.7rem;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:"DM Sans",sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:background .2s}
+.btn-apply-img:hover{background:var(--blue-dark)}
+.img-editor-preview{border-top:1px solid rgba(255,255,255,.08);padding:1rem 1.4rem;background:#0d0d0d;display:flex;align-items:center;gap:1rem}
+.img-editor-preview-label{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);flex-shrink:0}
+.img-preview-circle{border-radius:50%;overflow:hidden;background:#fff;flex-shrink:0}
+.img-preview-rect{border-radius:8px;overflow:hidden;background:#fff;flex-shrink:0}
+
+/* ── GLOBAL RESPONSIVE ── */
+img{max-width:100%;height:auto}
+*{-webkit-tap-highlight-color:transparent}
+
+/* ── MOBILE ─────────────────────────────── */
+@media(max-width:768px){
+
+  /* NAV */
+  .topnav-row1{padding:1.2rem 1.2rem}
+  .topnav-logo{height:38px}
+  .btn-entrar{padding:.38rem .9rem;font-size:.78rem}
+
+  /* HERO */
+  .hero{min-height:320px;padding-bottom:2rem}
+  .hero-h1{font-size:1.5rem;margin-bottom:1rem}
+  .hero-content{padding:0 1.2rem}
+  .hero-btn{font-size:.75rem;padding:.48rem .9rem}
+  .hero-actions{gap:.5rem}
+
+  /* CATS */
+  .cats-inner{padding:0 .8rem}
+  .cat-item{min-width:64px;padding:.5rem .6rem}
+  .cat-icon-wrap{width:42px;height:42px;font-size:1.2rem}
+  .cat-label{font-size:.6rem}
+
+  /* SECTIONS */
+  .sec-wrapper{padding:1.8rem 1rem}
+  .sec-title{font-size:1.2rem}
+
+  /* BRAND */
+  .brand-grid{grid-template-columns:1fr;gap:1.5rem}
+  .brand-img-wrap{display:block;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;order:-1}
+
+  /* BANNERS */
+  .banners3{grid-template-columns:1fr;gap:.8rem}
+  .b3{min-height:160px}
+  .b3-title{font-size:1rem}
+
+  /* PRODUTOS */
+  .prod-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;padding:0 1rem 1.5rem}
+  .prod-name{font-size:.88rem}
+  .prod-price{font-size:1rem}
+
+  /* BENEFÍCIOS */
+  .benef-grid{grid-template-columns:1fr;gap:1.5rem}
+  .benef-icon-wrap{width:80px;height:80px;font-size:2rem}
+
+  /* APP BANNER */
+  .app-banner{grid-template-columns:1fr;padding:1.8rem 1.2rem;border-radius:12px}
+  .app-banner-title{font-size:1.4rem}
+  .app-banner-img-wrap{display:none}
+  .app-btns-row{flex-wrap:wrap}
+  .franquia-banner-grid{grid-template-columns:1fr !important}
+
+  /* LOJAS */
+  .lojas-grid{grid-template-columns:1fr;gap:.8rem}
+
+  /* FAQ */
+  .faq-title{font-size:1.2rem}
+  .faq-q{font-size:.88rem}
+
+  /* CTA */
+  .cta-strip{flex-direction:column;align-items:flex-start;padding:1.4rem 1rem;gap:1rem}
+  .cta-text{font-size:.88rem}
+
+  /* FOOTER */
+  .footer-top{grid-template-columns:1fr 1fr;gap:1.5rem}
+  .footer-logo-img{height:42px}
+  .site-footer{padding:2rem 1rem 1rem}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:.3rem}
+
+  /* ADMIN */
+  .admin-modal{border-radius:12px}
+  .admin-body{padding:1rem;max-height:80vh}
+  .admin-tabs{gap:0}
+  .admin-tab{padding:.65rem .7rem;font-size:.6rem}
+  .frow{grid-template-columns:1fr}
+  .frow.tri{grid-template-columns:1fr}
+
+  /* DRAWER */
+  .drawer{width:100%;max-width:100vw}
+}
+
+/* ── SMALL PHONES ───────────────────────── */
+@media(max-width:380px){
+  .prod-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .hero-h1{font-size:1.3rem}
+  .app-banner-title{font-size:1.2rem}
+}
+
+
+/* Correções ST. JONES: mobile franquia + mapas */
+.map-frame{width:100%;height:150px;border:0;display:block}
+@media(max-width:768px){
+  .franquia-banner-grid{
+    grid-template-columns:1fr !important;
+    padding:1.6rem 1.1rem !important;
+    gap:1.2rem !important;
+    border-radius:16px !important;
+  }
+  .franquia-banner-grid h2{
+    font-size:1.45rem !important;
+    line-height:1.18 !important;
+  }
+  .franquia-banner-grid p{
+    font-size:.84rem !important;
+    max-width:100% !important;
+  }
+  .franquia-banner-grid > div:first-of-type > div:nth-of-type(2){
+    gap:.75rem !important;
+    justify-content:space-between !important;
+  }
+  .franquia-banner-grid > div:first-of-type > div:nth-of-type(2) > div{
+    flex:1 !important;
+    min-width:72px !important;
+  }
+  .franquia-banner-grid > div:first-of-type > div:nth-of-type(2) > div[style*="width:1px"]{
+    display:none !important;
+  }
+  .franquia-banner-grid button{
+    width:100% !important;
+    justify-content:center !important;
+    padding:.82rem 1rem !important;
+  }
+  .franquia-banner-grid > div:last-child{
+    gap:.65rem !important;
+  }
+  .franquia-banner-grid > div:last-child > div{
+    padding:.85rem .9rem !important;
+    gap:.75rem !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">Salvo!</div>
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <button class="drawer-close" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 6L6 18M6 6l12 12"></path></svg>
+    </button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="file:///C:/Users/User/Downloads/index_8.html#cardapio" class="d-link" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+      Cardápio
+    </a>
+    <a href="file:///C:/Users/User/Downloads/index_8.html#lojas" class="d-link" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+      Nossas Lojas
+    </a>
+    <a href="file:///C:/Users/User/Downloads/index_8.html#sobre" class="d-link" onclick="closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+      Sobre
+    </a>
+    <hr class="d-divider">
+    <button class="d-section-btn" onclick="this.classList.toggle(&#39;open&#39;)">Quem Somos <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg></button>
+    <button class="d-section-btn" onclick="this.classList.toggle(&#39;open&#39;)">Família <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg></button>
+    <button class="d-section-btn" onclick="this.classList.toggle(&#39;open&#39;)">St. Jones pra você <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg></button>
+    <button class="d-section-btn" onclick="this.classList.toggle(&#39;open&#39;)">Ajuda <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg></button>
+    <hr class="d-divider">
+    <button class="d-link" onclick="openAdminLogin();closeDrawer()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+      Admin
+    </button>
+  </nav>
+  <div class="drawer-app">
+    <p class="drawer-app-title">Aproveite a<br><strong>melhor experiência</strong></p>
+    <div class="drawer-app-btns">
+      <a href="file:///C:/Users/User/Downloads/index_8.html#" class="app-btn">🍎 iOS</a>
+      <a href="file:///C:/Users/User/Downloads/index_8.html#" class="app-btn">🤖 Android</a>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <img class="login-logo" id="loginLogoImg" src="./index_files/1777796657915-2sizzw65q4i.png" alt="St. Jones">
+    <p class="login-sub">Acesso administrativo</p>
+    <div class="lfg"><label>Senha</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key===&#39;Enter&#39;)doLogin()"></div>
+    <div class="login-err" id="loginErr">Senha incorreta</div>
+    <button class="btn-login" onclick="doLogin()">Entrar</button>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-modal">
+
+    <!-- SIDEBAR -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-logo">
+        <p>Painel admin</p>
+        <strong>St. Jones</strong>
+      </div>
+      <div class="admin-sidebar-menu">
+        <button class="admin-tab active" onclick="swTab(&#39;hero&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18"></path></svg>
+          Hero
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;logo&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+          Logo
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;cats&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>
+          Categorias
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;banners&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="14" rx="2"></rect><path d="M3 9h18"></path></svg>
+          Banners
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;cardapio&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1"></path><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg>
+          Cardápio
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;beneficios&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+          Benefícios
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;lojas&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+          Lojas
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;social&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          Redes Sociais
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;rodape&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="14" width="18" height="7" rx="2"></rect><path d="M3 10h18M3 6h18"></path></svg>
+          Rodapé
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;textos&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+          Textos
+        </button>
+        <button class="admin-tab" onclick="swTab(&#39;app&#39;,this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12" y2="18"></line></svg>
+          App / Franquia
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="admin-main">
+      <div class="admin-hdr">
+        <div>
+          <div class="admin-hdr-title" id="adminSectionTitle">Hero</div>
+          <div class="admin-hdr-sub" id="adminSectionSub">Edite o topo da página</div>
+        </div>
+        <button class="admin-x" onclick="closeAdmin()">✕</button>
+      </div>
+      <div class="admin-body">
+
+
+      <!-- LOGO -->
+      <div class="admin-sec" id="tab-logo">
+        <p class="asec-label">Logos do site</p>
+
+        <!-- LOGO NAV -->
+        <div class="admin-subsection" style="margin-bottom:1rem">
+          <div class="admin-subsection-title"><span>1</span> Logo do topo (nav)</div>
+          <div style="background:var(--blue);padding:1rem 1.5rem;border-radius:10px;display:inline-flex;align-items:center;margin-bottom:.8rem">
+            <img id="logoPreviewNav" src="./index_files/1777796657915-2sizzw65q4i.png" style="height:44px;width:auto;object-fit:contain" alt="Logo nav">
+          </div>
+          <p style="font-size:.75rem;color:var(--gray-mid);margin-bottom:.8rem">Aparece no menu superior e na tela de login.</p>
+          <div class="frow full">
+            <div class="fgroup">
+              <label>Nova imagem — logo do topo</label>
+              <div class="upload-box">
+                <input type="file" accept="image/*" onchange="prevLogoNav(event)">
+                <strong>Clique para enviar</strong>
+                <p>PNG com fundo transparente · recomendado</p>
+              </div>
+              <div id="logoNavPrev" style="margin-top:.6rem"></div>
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveLogoNav()">Aplicar logo do topo</button>
+        </div>
+
+        <!-- LOGO RODAPÉ -->
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>2</span> Logo do rodapé (footer)</div>
+          <div style="background:var(--blue-dark);padding:1rem 1.5rem;border-radius:10px;display:inline-flex;align-items:center;margin-bottom:.8rem">
+            <img id="logoPreviewFooter" src="./index_files/1777796659229-5r4hliuklzi.png" style="height:44px;width:auto;object-fit:contain" alt="Logo footer">
+          </div>
+          <p style="font-size:.75rem;color:var(--gray-mid);margin-bottom:.8rem">Aparece no rodapé do site. Pode ser diferente do topo.</p>
+          <div class="frow full">
+            <div class="fgroup">
+              <label>Nova imagem — logo do rodapé</label>
+              <div class="upload-box">
+                <input type="file" accept="image/*" onchange="prevLogoFooter(event)">
+                <strong>Clique para enviar</strong>
+                <p>PNG com fundo transparente · recomendado</p>
+              </div>
+              <div id="logoFooterPrev" style="margin-top:.6rem"></div>
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveLogoFooter()">Aplicar logo do rodapé</button>
+        </div>
+      </div>
+
+      <!-- LOJAS -->
+      <div class="admin-sec" id="tab-lojas">
+        <p class="asec-label">Gerenciar lojas</p>
+
+        <!-- OSASCO -->
+        <div class="admin-subsection" style="margin-bottom:1rem">
+          <div class="admin-subsection-title"><span>1</span> Osasco</div>
+          <div class="frow">
+            <div class="fgroup"><label>Nome da loja</label><input type="text" id="l1-nome" value="Osasco"></div>
+            <div class="fgroup"><label>Plataforma</label>
+              <select id="l1-plat">
+                <option value="brendi">Brendi</option>
+                <option value="ifood">iFood</option>
+              </select>
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Endereço completo</label>
+              <input type="text" id="l1-end" value="Av. Pau Brasil, 264 — Cidade das Flores, Osasco/SP — CEP 06184-010">
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Horário (texto exibido)</label>
+              <input type="text" id="l1-horario" value="Qua a Dom, 17h às 23h">
+            </div>
+          </div>
+          <div class="frow">
+            <div class="fgroup"><label>Abertura (horas, ex: 17)</label><input type="number" id="l1-abre" value="17" min="0" max="23"></div>
+            <div class="fgroup"><label>Fechamento (horas, ex: 23)</label><input type="number" id="l1-fecha" value="23" min="0" max="24"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Dias abertos</label>
+              <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem" id="l1-dias">
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="1" id="l1-d1"> Seg</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="2" id="l1-d2"> Ter</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="3" id="l1-d3" checked=""> Qua</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="4" id="l1-d4" checked=""> Qui</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="5" id="l1-d5" checked=""> Sex</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="6" id="l1-d6" checked=""> Sáb</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="0" id="l1-d0" checked=""> Dom</label>
+              </div>
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Link de pedido</label>
+              <input type="text" id="l1-link" value="https://pedido.brendi.com.br/stjones/?utm_source=Whatsapp">
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveLoja(1)">Salvar Osasco</button>
+        </div>
+
+        <!-- VILA MARIANA -->
+        <div class="admin-subsection" style="margin-bottom:1rem">
+          <div class="admin-subsection-title"><span>2</span> Vila Mariana</div>
+          <div class="frow">
+            <div class="fgroup"><label>Nome da loja</label><input type="text" id="l2-nome" value="Vila Mariana"></div>
+            <div class="fgroup"><label>Plataforma</label>
+              <select id="l2-plat">
+                <option value="brendi">Brendi</option>
+                <option value="ifood" selected="">iFood</option>
+              </select>
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Endereço completo</label>
+              <input type="text" id="l2-end" value="Rua França Pinto, 193 — Vila Mariana, São Paulo/SP — CEP 04016-031">
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Horário (texto exibido)</label>
+              <input type="text" id="l2-horario" value="Seg a Ter 13h–22h · Qua a Dom 13h–3h30">
+            </div>
+          </div>
+          <div class="frow">
+            <div class="fgroup"><label>Abertura (horas)</label><input type="number" id="l2-abre" value="13" min="0" max="23"></div>
+            <div class="fgroup"><label>Fechamento (horas, use 27 para 3h do dia seguinte)</label><input type="number" id="l2-fecha" value="27" min="0" max="30"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Dias abertos</label>
+              <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem">
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="1" id="l2-d1" checked=""> Seg</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="2" id="l2-d2" checked=""> Ter</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="3" id="l2-d3" checked=""> Qua</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="4" id="l2-d4" checked=""> Qui</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="5" id="l2-d5" checked=""> Sex</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="6" id="l2-d6" checked=""> Sáb</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="0" id="l2-d0" checked=""> Dom</label>
+              </div>
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Link de pedido</label>
+              <input type="text" id="l2-link" value="https://www.ifood.com.br/delivery/sao-paulo-sp/st-jones---vila-mariana-vila-mariana/d85c6320-9139-4357-a031-406b9fb445d5">
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveLoja(2)">Salvar Vila Mariana</button>
+        </div>
+
+        <!-- TATUAPÉ -->
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>3</span> Tatuapé</div>
+          <div class="frow">
+            <div class="fgroup"><label>Nome da loja</label><input type="text" id="l3-nome" value="Tatuapé"></div>
+            <div class="fgroup"><label>Plataforma</label>
+              <select id="l3-plat">
+                <option value="brendi">Brendi</option>
+                <option value="ifood" selected="">iFood</option>
+              </select>
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Endereço completo</label>
+              <input type="text" id="l3-end" value="Rua Coelho Lisboa, 501 — Cidade Mãe do Céu, São Paulo/SP — CEP 03323-040">
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Horário (texto exibido)</label>
+              <input type="text" id="l3-horario" value="Seg a Dom, 13h às 22h">
+            </div>
+          </div>
+          <div class="frow">
+            <div class="fgroup"><label>Abertura (horas)</label><input type="number" id="l3-abre" value="13" min="0" max="23"></div>
+            <div class="fgroup"><label>Fechamento (horas)</label><input type="number" id="l3-fecha" value="22" min="0" max="30"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Dias abertos</label>
+              <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem">
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="1" id="l3-d1" checked=""> Seg</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="2" id="l3-d2" checked=""> Ter</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="3" id="l3-d3" checked=""> Qua</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="4" id="l3-d4" checked=""> Qui</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="5" id="l3-d5" checked=""> Sex</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="6" id="l3-d6" checked=""> Sáb</label>
+                <label style="display:flex;align-items:center;gap:.3rem;font-size:.78rem;cursor:pointer"><input type="checkbox" value="0" id="l3-d0" checked=""> Dom</label>
+              </div>
+            </div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>Link de pedido</label>
+              <input type="text" id="l3-link" value="https://www.ifood.com.br/delivery/sao-paulo-sp/st-jones---tatuape-cidade-mae-do-ceu/2f19af38-f255-428f-b9ff-43940df78459">
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveLoja(3)">Salvar Tatuapé</button>
+        </div>
+
+      </div>
+
+      <!-- HERO -->
+      <div class="admin-sec active" id="tab-hero">
+        <p class="asec-label">Seção hero (topo da página)</p>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>1</span> Textos do Hero</div>
+          <div class="frow full"><div class="fgroup"><label>Frase principal</label><input type="text" id="heroH" placeholder="Como você quer seu pedido hoje?"></div></div>
+          <div class="frow"><div class="fgroup"><label>Texto botão 1</label><input type="text" id="heroBtn1" placeholder="Peça e Retire"></div><div class="fgroup"><label>Texto botão 2</label><input type="text" id="heroBtn2" placeholder="Delivery"></div></div>
+        </div>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>2</span> Imagem de fundo do Hero</div>
+          <div class="frow full"><div class="fgroup"><div class="upload-box"><input type="file" accept="image/*" onchange="prevImg(event,&#39;heroPrev&#39;,&#39;_hImg&#39;)"><strong>Clique para enviar</strong><p>JPG ou WEBP · 1920×1080px recomendado</p></div><div id="heroPrev"></div></div></div>
+        </div>
+        <button class="btn-save" onclick="saveHero()">Salvar hero</button>
+      </div>
+
+      <!-- CATEGORIAS -->
+      <div class="admin-sec" id="tab-cats">
+        <p class="asec-label">Ícones e labels das categorias</p>
+        <div id="catsList" class="ilist"></div>
+        <p style="font-size:.75rem;color:var(--gray-mid);margin-bottom:1rem">Clique em uma categoria para editar nome e ícone/foto</p>
+        <div id="catEditForm" style="display:none">
+          <hr class="divln">
+          <div class="admin-subsection-title"><span>✏️</span> Editando categoria: <span id="catEditName" style="color:var(--blue)"></span></div>
+          <div class="frow"><div class="fgroup"><label>Nome da categoria</label><input type="text" id="catName"></div><div class="fgroup"><label>Emoji (ou deixe vazio para usar foto)</label><input type="text" id="catEmoji" placeholder="🍔"></div></div>
+          <div class="frow full"><div class="fgroup"><label>Foto do ícone (substitui o emoji)</label><div class="upload-box"><input type="file" accept="image/*" onchange="prevImg(event,&#39;catPrev&#39;,&#39;_catImg&#39;)"><strong>Clique para enviar foto</strong><p>PNG ou JPG · 100×100px recomendado</p></div><div id="catPrev"></div></div></div>
+          <button class="btn-save" onclick="saveCat()">Salvar categoria</button>
+        </div>
+      </div>
+
+      <!-- BANNERS -->
+      <div class="admin-sec" id="tab-banners">
+        <p class="asec-label">Os 3 banners de promoção</p>
+        <div id="bannersList" class="ilist"></div>
+        <button class="btn-add-item" onclick="togForm(&#39;bannerForm&#39;)">+ Novo banner</button>
+        <div id="bannerForm" style="display:none">
+          <hr class="divln">
+          <div class="frow"><div class="fgroup"><label>Título</label><input type="text" id="bTitle" placeholder="Ex: Smash Clássico"></div><div class="fgroup"><label>Badge (NOVO, OFERTA…)</label><input type="text" id="bBadge" placeholder="NOVO"></div></div>
+          <div class="frow full"><div class="fgroup"><label>Subtítulo</label><input type="text" id="bSub" placeholder="Só esta semana"></div></div>
+          <div class="frow full"><div class="fgroup"><label>Imagem do banner</label><div class="upload-box"><input type="file" accept="image/*" onchange="prevImg(event,&#39;bPrev&#39;,&#39;_bImg&#39;)"><strong>Clique para enviar</strong><p>JPG ou PNG · 600×400px</p></div><div id="bPrev"></div></div></div>
+          <button class="btn-save" onclick="saveBanner()">Salvar banner</button>
+        </div>
+      </div>
+
+      <!-- CARDÁPIO -->
+      <div class="admin-sec" id="tab-cardapio">
+        <p class="asec-label">Produtos do cardápio</p>
+        <div id="produtosList" class="ilist"></div>
+        <button class="btn-add-item" onclick="togForm(&#39;produtoForm&#39;)">+ Novo produto</button>
+        <div id="produtoForm" style="display:none">
+          <hr class="divln">
+          <div class="frow"><div class="fgroup"><label>Nome</label><input type="text" id="pNome" placeholder="Smash Clássico"></div><div class="fgroup"><label>Categoria</label><select id="pCat"><option>Smash Burgers</option><option>Chicken</option><option>Acompanhamentos</option><option>Combos</option><option>Sobremesas</option><option>Bebidas</option><option>Lançamentos</option></select></div></div>
+          <div class="frow"><div class="fgroup"><label>Preço (R$)</label><input type="text" id="pPreco" placeholder="32,90"></div><div class="fgroup"><label>Loja</label><select id="pLoja"><option>Todas</option><option>Osasco</option><option>Vila Mariana</option><option>Tatuapé</option></select></div></div>
+          <div class="frow full"><div class="fgroup"><label>Descrição</label><textarea id="pDesc" placeholder="Ingredientes e descrição"></textarea></div></div>
+          <div class="frow full"><div class="fgroup"><label>Foto do produto</label><div class="upload-box"><input type="file" accept="image/*" onchange="prevImg(event,&#39;pPrev&#39;,&#39;_pImg&#39;)"><strong>Clique para enviar</strong><p>JPG ou PNG · 600×600px</p></div><div id="pPrev"></div></div></div>
+          <button class="btn-save" onclick="saveProduto()">Salvar produto</button>
+        </div>
+      </div>
+
+      <!-- BENEFÍCIOS -->
+      <div class="admin-sec" id="tab-beneficios">
+        <p class="asec-label">Os 3 ícones de benefício + textos</p>
+        <div id="benefList"></div>
+      </div>
+
+      <!-- APP BANNER -->
+      <div class="admin-sec" id="tab-app">
+        <p class="asec-label">Seção banner do App</p>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>1</span> Textos do banner</div>
+          <div class="frow full"><div class="fgroup"><label>Título</label><input type="text" id="appTitle" placeholder="Peça pelo nosso delivery direto"></div></div>
+          <div class="frow full"><div class="fgroup"><label>Descrição</label><textarea id="appDesc" placeholder="Faça seu pedido e seja o primeiro a saber das novidades..."></textarea></div></div>
+        </div>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>2</span> Foto/imagem do banner do App</div>
+          <div class="frow full"><div class="fgroup"><div class="upload-box"><input type="file" accept="image/*" onchange="prevImg(event,&#39;appPrev&#39;,&#39;_appImg&#39;)"><strong>Clique para enviar imagem</strong><p>JPG ou PNG · aparece no lado direito do banner amarelo</p></div><div id="appPrev"></div></div></div>
+        </div>
+        <button class="btn-save" onclick="saveApp()">Salvar seção App</button>
+      </div>
+
+      <!-- REDES SOCIAIS -->
+      <div class="admin-sec" id="tab-social">
+        <p class="asec-label">Redes sociais</p>
+        <div id="socialList"></div>
+        <button class="btn-add-item" style="margin-top:.5rem" onclick="togForm(&#39;socialNewForm&#39;)">+ Nova rede social</button>
+        <div id="socialNewForm" style="display:none">
+          <hr class="divln">
+          <div class="admin-subsection-title"><span>+</span> Nova rede social</div>
+          <div class="frow">
+            <div class="fgroup"><label>Nome (ex: Instagram)</label><input type="text" id="sn-nome" placeholder="Instagram"></div>
+            <div class="fgroup"><label>URL do perfil</label><input type="url" id="sn-url" placeholder="https://instagram.com/stjones"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup">
+              <label>Ícone (PNG transparente)</label>
+              <div class="upload-box">
+                <input type="file" accept="image/*" onchange="prevImg(event,&#39;snPrev&#39;,&#39;_snImg&#39;)">
+                <strong>Clique para enviar ícone</strong>
+                <p>PNG com fundo transparente · 64×64px</p>
+              </div>
+              <div id="snPrev"></div>
+            </div>
+          </div>
+          <button class="btn-save" onclick="addSocial()">Adicionar rede</button>
+        </div>
+        <div id="socialEditForm" style="display:none">
+          <hr class="divln">
+          <div class="admin-subsection-title"><span>✏️</span> Editando: <span id="socialEditName" style="color:var(--blue)"></span></div>
+          <div class="frow full">
+            <div class="fgroup"><label>Nome da rede</label><input type="text" id="social-nome" placeholder="Instagram"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup"><label>URL do perfil</label><input type="url" id="social-url" placeholder="https://instagram.com/stjones"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup">
+              <label>Ícone (PNG transparente)</label>
+              <div class="upload-box">
+                <input type="file" accept="image/*" onchange="prevImg(event,&#39;socialPrev&#39;,&#39;_socialImg&#39;)">
+                <strong>Clique para enviar novo ícone</strong>
+                <p>PNG com fundo transparente · 64×64px</p>
+              </div>
+              <div id="socialPrev"></div>
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveSocial()">Salvar alterações</button>
+        </div>
+      </div>
+
+      <!-- RODAPÉ -->
+      <div class="admin-sec" id="tab-rodape">
+        <p class="asec-label">Conteúdo dos popups do rodapé</p>
+
+        <!-- QUEM SOMOS -->
+        <div class="admin-subsection" style="margin-bottom:1rem">
+          <div class="admin-subsection-title"><span>1</span> Popup — Quem Somos / Institucional</div>
+          <div class="frow">
+            <div class="fgroup"><label>Tag (ex: Nossa história)</label><input type="text" id="qs-tag" placeholder="Nossa história"></div>
+            <div class="fgroup"><label>Título do popup</label><input type="text" id="qs-title" placeholder="Quem Somos"></div>
+          </div>
+          <div class="frow full">
+            <div class="fgroup">
+              <label>Texto (aparece no popup)</label>
+              <textarea id="qs-text" style="min-height:140px" placeholder="Conte a história da marca, missão, valores..."></textarea>
+            </div>
+          </div>
+          <button class="btn-save" onclick="savePopupQuemSomos()">Salvar</button>
+        </div>
+
+        <!-- CONTATO -->
+        <div class="admin-subsection" style="margin-bottom:1rem">
+          <div class="admin-subsection-title"><span>2</span> Popup — Contato</div>
+          <p style="font-size:.78rem;color:var(--gray-mid);margin-bottom:.8rem">O formulário de contato envia as mensagens via WhatsApp para o número <strong>(11) 99444-0000</strong>. Para mudar o número, edite no código.</p>
+          <div class="frow full">
+            <div class="fgroup"><label>Mensagem de rodapé do formulário</label><input type="text" id="ct-footer-msg" placeholder="Respondemos em até 24 horas"></div>
+          </div>
+          <button class="btn-save" onclick="savePopupContato()">Salvar</button>
+        </div>
+
+        <!-- RESTAURANTES -->
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>3</span> Popup — Restaurantes</div>
+          <p style="font-size:.78rem;color:var(--gray-mid)">O popup de Restaurantes exibe automaticamente as 3 lojas com endereços e horários cadastrados na aba <strong>Lojas</strong>. Para editar, vá até a aba Lojas.</p>
+        </div>
+      </div>
+
+      <!-- TEXTOS GERAIS -->
+      <div class="admin-sec" id="tab-textos">
+        <p class="asec-label">Editar todos os textos da página</p>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>A</span> Seção Sobre / Brand</div>
+          <div class="frow"><div class="fgroup"><label>Título da seção</label><input type="text" id="brandTitle" placeholder="St. Jones"></div></div>
+          <div class="frow full"><div class="fgroup"><label>Descrição</label><textarea id="brandDesc" placeholder="Smash burgers artesanais..."></textarea></div></div>
+          <div class="frow full"><div class="fgroup"><label>Foto da seção sobre</label><div class="upload-box"><input type="file" accept="image/*" onchange="prevImg(event,&#39;brandPrev&#39;,&#39;_brandImg&#39;)"><strong>Clique para enviar</strong><p>JPG ou PNG · aparece ao lado do texto</p></div><div id="brandPrev"></div></div></div>
+          <button class="btn-save" onclick="saveBrand()">Salvar seção sobre</button>
+        </div>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>B</span> Faixa de CTA (amarela)</div>
+          <div class="frow full"><div class="fgroup"><label>Texto da faixa</label><input type="text" id="ctaText" placeholder="Registre-se e desfrute da experiência completa:"></div></div>
+          <div class="frow"><div class="fgroup"><label>Texto em negrito</label><input type="text" id="ctaBold" placeholder="tenha acesso à ofertas e descontos exclusivos."></div><div class="fgroup"><label>Texto do botão</label><input type="text" id="ctaBtn" placeholder="Registrar-se"></div></div>
+          <button class="btn-save" onclick="saveCta()">Salvar faixa CTA</button>
+        </div>
+        <div class="admin-subsection">
+          <div class="admin-subsection-title"><span>C</span> Perguntas do FAQ</div>
+          <div id="faqAdmin"></div>
+          <button class="btn-add-item" onclick="addFaq()">+ Adicionar pergunta</button>
+          <button class="btn-save" onclick="saveFaq()">Salvar FAQ</button>
+        </div>
+      </div>
+
+    </div>
+  
+      </div>
+    </div>
+
+  </div>
+
+
+<!-- NAV -->
+<header class="topnav">
+  <div class="topnav-row1">
+    <div class="topnav-left">
+      <button class="hbg-btn" onclick="openDrawer()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="26" height="26"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+      <img class="topnav-logo" id="navLogoImg" src="./index_files/1777796657915-2sizzw65q4i.png" alt="St. Jones" onclick="scrollTo(0,0)">
+    </div>
+    <div class="topnav-right">
+      <a class="btn-entrar" href="file:///C:/Users/User/Downloads/index_8.html#" onclick="openAdminLogin();return false">Entrar</a>
+    </div>
+  </div>
+
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <img id="heroBgImg" class="hero-bg" src="./index_files/1778130706494-j4om10ilii.png" alt="" style="display: block;">
+  <div class="hero-bg" id="heroFallback" style="background: linear-gradient(135deg, rgb(13, 47, 82) 0%, rgb(26, 115, 200) 100%); display: none;"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-h1" id="heroH1El">Como você quer seu pedido hoje?</h1>
+    <div class="hero-actions">
+      <a href="file:///C:/Users/User/Downloads/index_8.html#lojas" class="hero-btn" id="heroBtn1El">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg> Peça e Retire</a>
+      <a href="file:///C:/Users/User/Downloads/index_8.html#lojas" class="hero-btn" id="heroBtn2El">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"></path></svg> Delivery</a>
+    </div>
+  </div>
+</section>
+
+<!-- CATS BAR -->
+<div class="cats-bar" id="catsBar">
+  <div class="cats-inner" id="catsInner">
+    <button class="cat-item active" onclick="filterCat(&#39;Todos&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777798366667-anpgcn4ihfg.png" alt="Todos"></div>
+      <span class="cat-label">Todos</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Burgers&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796654512-leav6uga6t.png" alt="Burgers"></div>
+      <span class="cat-label">Burgers</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Chicken&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796654853-grl59iyreh6.png" alt="Chicken"></div>
+      <span class="cat-label">Chicken</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Acompanhamentos&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796655288-aoji7mjfov.png" alt="Acompanhamentos"></div>
+      <span class="cat-label">Acompanhamentos</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Combos&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796655592-rhm6fs5liv9.png" alt="Combos"></div>
+      <span class="cat-label">Combos</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Sobremesas&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796656028-7ylzwa159w9.png" alt="Sobremesas"></div>
+      <span class="cat-label">Sobremesas</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Bebidas&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796656332-8n2skbhp2bc.png" alt="Bebidas"></div>
+      <span class="cat-label">Bebidas</span>
+    </button>
+    <button class="cat-item" onclick="filterCat(&#39;Lançamentos&#39;,this)">
+      <div class="cat-icon-wrap"><img src="./index_files/1777796656773-bjej5yu5rgq.png" alt="Lançamentos"></div>
+      <span class="cat-label">Lançamentos</span>
+    </button></div>
+</div>
+
+<!-- BRAND / SOBRE -->
+<div class="sec-wrapper" style="background:#fff" id="sobre">
+  <div class="sec-inner">
+    <div class="brand-grid">
+      <div>
+        <h2 class="sec-title" id="brandTitleEl">St. Jones</h2>
+        <p id="brandDescEl" style="font-size:.93rem;color:var(--gray-mid);line-height:1.7;margin-top:.5rem">Feito pra dar vontade de pedir de novo.
+
+Pão tostado na hora, carne no ponto e um molho que você reconhece no primeiro bite.
+Sem exagero. Só acerto.
+
+Osasco, Vila Mariana e Tatuapé.</p>
+      </div>
+      <div class="brand-img-wrap" id="brandImgWrap"><img src="./index_files/1778130905412-wutk7jps7y.png" alt="brand"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROMOS -->
+<div class="sec-wrapper" style="background:#fff;padding-top:1.5rem;padding-bottom:1.5rem" id="promos">
+  <div class="sec-inner">
+    <h2 class="sec-title" style="margin-bottom:1rem">Promoções</h2>
+    <div class="banners3" id="bannersGrid3"><div class="b3" style="background-image:url(https://tdlkqcxrgqplijukblvr.supabase.co/storage/v1/object/public/site-images/landing-banners-0-img/1777799293128-f08m9cr2nd.png);background-size:cover;background-position:center">
+        <div class="b3-ov"></div>
+        <div class="b3-cnt">
+          <span class="b3-tag">NOVO</span>
+          <div class="b3-title">Vai Brasil</div>
+          
+        </div>
+      </div><div class="b3" style="background-image:url(https://tdlkqcxrgqplijukblvr.supabase.co/storage/v1/object/public/site-images/landing-banners-1-img/1777799367298-cqtoqthey1u.png);background-size:cover;background-position:center">
+        <div class="b3-ov"></div>
+        <div class="b3-cnt">
+          <span class="b3-tag">NOVO</span>
+          <div class="b3-title">Vai Brasil</div>
+          
+        </div>
+      </div><div class="b3-empty" onclick="openAdminLogin()">+ Adicionar banner</div></div>
+  </div>
+</div>
+
+<!-- CARDÁPIO -->
+<div class="sec-wrapper" style="background:#fff;padding-top:1.5rem;padding-bottom:2rem" id="cardapio">
+  <div class="sec-inner">
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1.5rem;flex-wrap:wrap">
+      <h2 class="sec-title" style="margin-bottom:0">Cardápio</h2>
+      <div style="display:inline-flex;align-items:center;gap:.4rem;background:var(--blue);padding:.35rem .9rem;border-radius:999px;animation:pulse-badge 2s ease-in-out infinite">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--yellow);display:inline-block"></span>
+        <span style="font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)">Em breve</span>
+      </div>
+    </div>
+    <div style="background:#f5f8ff;border:1.5px solid rgba(26,115,200,.15);border-radius:16px;padding:2.5rem 2rem;text-align:center;margin-bottom:1.5rem">
+      <div style="width:56px;height:56px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"></rect><path d="M3 9h18M9 21V9"></path></svg>
+      </div>
+      <h3 style="font-size:1.2rem;font-weight:700;color:var(--black);margin-bottom:.5rem">Cardápio chegando em breve!</h3>
+      <p style="color:var(--gray-mid);font-size:.88rem;max-width:360px;margin:0 auto;line-height:1.6">Estamos preparando algo especial para você. Em breve, confira todos os nossos produtos e preços aqui.</p>
+    </div>
+    <div class="prod-grid" id="prodGrid"><div class="prod-empty" onclick="openAdminLogin()"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v8M8 12h8"></path></svg>Adicionar produto</div></div>
+  </div>
+</div>
+
+<!-- BENEFÍCIOS -->
+<div class="sec-wrapper" style="background:#fff" id="beneficios-sec">
+  <div class="sec-inner">
+    <div class="benef-grid" id="benefGrid">
+    <div class="benef-item">
+      <div class="benef-icon-wrap" onclick="openAdminLogin()">
+        <span>🛵</span>
+      </div>
+      <p class="benef-text">Peça para entregar ou retire<strong>no restaurante que preferir</strong></p>
+    </div>
+    <div class="benef-item">
+      <div class="benef-icon-wrap" onclick="openAdminLogin()">
+        <span>📱</span>
+      </div>
+      <p class="benef-text">Registre-se e aproveite os<strong>benefícios e descontos!</strong></p>
+    </div>
+    <div class="benef-item">
+      <div class="benef-icon-wrap" onclick="openAdminLogin()">
+        <span>⭐</span>
+      </div>
+      <p class="benef-text">A experiência St. Jones<strong>100% pensada para você!</strong></p>
+    </div></div>
+  </div>
+</div>
+
+<!-- APP BANNER -->
+<div class="sec-wrapper" style="background:#fff;padding-top:0">
+  <div class="sec-inner">
+    <div class="franquia-banner-grid" style="background:var(--yellow);border-radius:20px;padding:3.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center;position:relative;overflow:hidden">
+
+      <!-- Detalhes decorativos -->
+      <div style="position:absolute;top:-40px;right:30%;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-60px;right:10%;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.08);pointer-events:none"></div>
+      <div style="position:absolute;top:20px;left:-30px;width:120px;height:120px;border-radius:50%;background:rgba(26,115,200,.08);pointer-events:none"></div>
+
+      <!-- Lado esquerdo: texto -->
+      <div style="position:relative;z-index:1">
+        <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem;flex-wrap:wrap">
+          <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.1);padding:.35rem .9rem;border-radius:999px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.6)" stroke-width="2.5"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+            <span style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(0,0,0,.6)">Seja um franqueado</span>
+          </div>
+          <div style="display:inline-flex;align-items:center;gap:.4rem;background:var(--blue);padding:.35rem .9rem;border-radius:999px;animation:pulse-badge 2s ease-in-out infinite">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--yellow);display:inline-block"></span>
+            <span style="font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--yellow)">Em breve</span>
+          </div>
+        </div>
+        <h2 style="font-size:2.2rem;font-weight:700;color:var(--black);line-height:1.15;margin-bottom:.9rem">Abra sua<br><span style="position:relative">St. Jones
+          <svg style="position:absolute;bottom:-6px;left:0;width:100%" viewBox="0 0 140 8" fill="none" preserveAspectRatio="none"><path d="M2 6C30 2 80 2 138 6" stroke="rgba(0,0,0,.25)" stroke-width="2.5" stroke-linecap="round"></path></svg>
+        </span></h2>
+        <p style="font-size:.92rem;color:rgba(0,0,0,.65);line-height:1.7;margin-bottom:1.6rem;max-width:340px">Faça parte de uma rede em expansão. Modelo de negócio testado, suporte completo e uma marca que o público já ama.</p>
+        <div style="display:flex;gap:1.5rem;margin-bottom:1.6rem;flex-wrap:wrap">
+          <div style="text-align:center">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--black)">3</div>
+            <div style="font-size:.7rem;color:rgba(0,0,0,.55);letter-spacing:.06em;text-transform:uppercase">Lojas abertas</div>
+          </div>
+          <div style="width:1px;background:rgba(0,0,0,.12)"></div>
+          <div style="text-align:center">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--black)">SP</div>
+            <div style="font-size:.7rem;color:rgba(0,0,0,.55);letter-spacing:.06em;text-transform:uppercase">Em expansão</div>
+          </div>
+          <div style="width:1px;background:rgba(0,0,0,.12)"></div>
+          <div style="text-align:center">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--black)">100%</div>
+            <div style="font-size:.7rem;color:rgba(0,0,0,.55);letter-spacing:.06em;text-transform:uppercase">Suporte</div>
+          </div>
+        </div>
+        <button onclick="openFranquiasModal()" style="display:inline-flex;align-items:center;gap:.6rem;padding:.9rem 2rem;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.02em" onmouseover="this.style.background=&#39;#0d5aa7&#39;;this.style.transform=&#39;translateY(-2px)&#39;" onmouseout="this.style.background=&#39;var(--blue)&#39;;this.style.transform=&#39;translateY(0)&#39;">
+          Quero ser franqueado
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+
+      <!-- Lado direito: cards de benefícios -->
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:.8rem">
+        <div style="background:rgba(255,255,255,.55);border-radius:14px;padding:1.1rem 1.3rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(4px)">
+          <div style="width:42px;height:42px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+          </div>
+          <div>
+            <div style="font-size:.88rem;font-weight:700;color:var(--black)">Marca consolidada</div>
+            <div style="font-size:.75rem;color:rgba(0,0,0,.55);margin-top:.1rem">Identidade forte e clientes fiéis</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.55);border-radius:14px;padding:1.1rem 1.3rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(4px)">
+          <div style="width:42px;height:42px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path></svg>
+          </div>
+          <div>
+            <div style="font-size:.88rem;font-weight:700;color:var(--black)">Suporte completo</div>
+            <div style="font-size:.75rem;color:rgba(0,0,0,.55);margin-top:.1rem">Treinamento, operação e marketing</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.55);border-radius:14px;padding:1.1rem 1.3rem;display:flex;align-items:center;gap:1rem;backdrop-filter:blur(4px)">
+          <div style="width:42px;height:42px;background:var(--blue);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"></path></svg>
+          </div>
+          <div>
+            <div style="font-size:.88rem;font-weight:700;color:var(--black)">Retorno comprovado</div>
+            <div style="font-size:.75rem;color:rgba(0,0,0,.55);margin-top:.1rem">Modelo rentável e escalável</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- LOJAS -->
+<div class="sec-wrapper" style="background:#fff" id="lojas">
+  <div class="sec-inner">
+    <p class="sec-label" style="font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:.4rem">Encontre a mais próxima</p>
+    <h2 class="sec-title" style="margin-bottom:1.8rem">Nossas Lojas</h2>
+    <div class="lojas-grid" id="lojasGrid">
+
+      <!-- OSASCO -->
+      <div class="loja-card" style="padding:0;overflow:hidden;border-radius:12px;border:1px solid var(--gray-light);background:#fff;display:flex;flex-direction:column">
+        <div style="width:100%;height:150px;overflow:hidden;position:relative;border-radius:0">
+          <iframe src="./index_files/maps.html" width="100%" height="150" class="map-frame" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a href="https://www.google.com/maps/search/Av+Pau+Brasil+264+Cidade+das+Flores+Osasco+SP" target="_blank" style="position:absolute;bottom:8px;right:8px;background:white;color:var(--blue);font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.15);letter-spacing:.04em">
+            Abrir Maps ↗
+          </a>
+        </div>
+        <div style="padding:1.1rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+            <span style="font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#d46b00;background:rgba(212,107,0,.08);border:1px solid rgba(212,107,0,.18);padding:.18rem .55rem;border-radius:999px">● Brendi</span>
+            <span id="status-osasco" style="font-size:.65rem;font-weight:600;display:flex;align-items:center;gap:.3rem"><span style="width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;display:inline-block"></span><span style="color:#dc2626">Fechado</span></span>
+          </div>
+          <div data-nome="osasco" style="font-size:1rem;font-weight:700;color:var(--black);margin-bottom:.25rem">Osasco</div>
+          <div data-end="osasco" style="font-size:.78rem;color:var(--gray-mid);line-height:1.5;margin-bottom:.3rem">Av. Pau Brasil, 264<br>Cidade das Flores — Osasco/SP<br>CEP 06184-010</div>
+          <div style="font-size:.7rem;color:var(--gray-mid);margin-bottom:.9rem"><span style="font-weight:600;color:var(--black)">Horário:</span> <span data-horario="osasco">Qua a Dom, 17h às 23h</span></div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Av+Pau+Brasil+264+Cidade+das+Flores+Osasco+SP" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;background:var(--blue);color:#fff;border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:background .2s" onmouseover="this.style.background=&#39;#0d5aa7&#39;" onmouseout="this.style.background=&#39;var(--blue)&#39;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+              Como chegar
+            </a>
+            <a href="https://pedido.brendi.com.br/stjones/?utm_source=Whatsapp" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;background:transparent;color:var(--blue);border:1.5px solid var(--blue);border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .2s" onmouseover="this.style.background=&#39;var(--blue)&#39;;this.style.color=&#39;#fff&#39;" onmouseout="this.style.background=&#39;transparent&#39;;this.style.color=&#39;var(--blue)&#39;">
+              Pedir agora
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- VILA MARIANA -->
+      <div class="loja-card" style="padding:0;overflow:hidden;border-radius:12px;border:1px solid var(--gray-light);background:#fff;display:flex;flex-direction:column">
+        <div style="width:100%;height:150px;overflow:hidden;position:relative;border-radius:0">
+          <iframe src="./index_files/maps(1).html" width="100%" height="150" class="map-frame" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a href="https://www.google.com/maps/search/Rua+Franca+Pinto+193+Vila+Mariana+Sao+Paulo+SP" target="_blank" style="position:absolute;bottom:8px;right:8px;background:white;color:var(--blue);font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.15);letter-spacing:.04em">
+            Abrir Maps ↗
+          </a>
+        </div>
+        <div style="padding:1.1rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+            <span style="font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#ea1d2c;background:rgba(234,29,44,.06);border:1px solid rgba(234,29,44,.18);padding:.18rem .55rem;border-radius:999px">● iFood</span>
+            <span id="status-vilamariana" style="font-size:.65rem;font-weight:600;display:flex;align-items:center;gap:.3rem"><span style="width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;display:inline-block"></span><span style="color:#dc2626">Fechado</span></span>
+          </div>
+          <div data-nome="vilamariana" style="font-size:1rem;font-weight:700;color:var(--black);margin-bottom:.25rem">Vila Mariana</div>
+          <div data-end="vilamariana" style="font-size:.78rem;color:var(--gray-mid);line-height:1.5;margin-bottom:.3rem">Rua França Pinto, 193<br>Vila Mariana — São Paulo/SP<br>CEP 04016-031</div>
+          <div style="font-size:.7rem;color:var(--gray-mid);margin-bottom:.9rem"><span style="font-weight:600;color:var(--black)">Horário:</span> <span data-horario="vilamariana">Seg a Ter 13h–22h · Qua a Dom 13h–3h30</span></div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Rua+Franca+Pinto+193+Vila+Mariana+Sao+Paulo+SP" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;background:var(--blue);color:#fff;border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:background .2s" onmouseover="this.style.background=&#39;#0d5aa7&#39;" onmouseout="this.style.background=&#39;var(--blue)&#39;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+              Como chegar
+            </a>
+            <a href="https://www.ifood.com.br/delivery/sao-paulo-sp/st-jones---vila-mariana-vila-mariana/d85c6320-9139-4357-a031-406b9fb445d5" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;background:transparent;color:var(--blue);border:1.5px solid var(--blue);border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .2s" onmouseover="this.style.background=&#39;var(--blue)&#39;;this.style.color=&#39;#fff&#39;" onmouseout="this.style.background=&#39;transparent&#39;;this.style.color=&#39;var(--blue)&#39;">
+              Pedir agora
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TATUAPÉ -->
+      <div class="loja-card" style="padding:0;overflow:hidden;border-radius:12px;border:1px solid var(--gray-light);background:#fff;display:flex;flex-direction:column">
+        <div style="width:100%;height:150px;overflow:hidden;position:relative;border-radius:0">
+          <iframe src="./index_files/maps(2).html" width="100%" height="150" class="map-frame" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <a href="https://www.google.com/maps/search/Rua+Coelho+Lisboa+501+Tatuape+Sao+Paulo+SP" target="_blank" style="position:absolute;bottom:8px;right:8px;background:white;color:var(--blue);font-size:.65rem;font-weight:700;padding:.25rem .6rem;border-radius:6px;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.15);letter-spacing:.04em">
+            Abrir Maps ↗
+          </a>
+        </div>
+        <div style="padding:1.1rem">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+            <span style="font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#ea1d2c;background:rgba(234,29,44,.06);border:1px solid rgba(234,29,44,.18);padding:.18rem .55rem;border-radius:999px">● iFood</span>
+            <span id="status-tatuape" style="font-size:.65rem;font-weight:600;display:flex;align-items:center;gap:.3rem"><span style="width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;display:inline-block"></span><span style="color:#dc2626">Fechado</span></span>
+          </div>
+          <div data-nome="tatuape" style="font-size:1rem;font-weight:700;color:var(--black);margin-bottom:.25rem">Tatuapé</div>
+          <div data-end="tatuape" style="font-size:.78rem;color:var(--gray-mid);line-height:1.5;margin-bottom:.3rem">Rua Coelho Lisboa, 501<br>Cidade Mãe do Céu — São Paulo/SP<br>CEP 03323-040</div>
+          <div style="font-size:.7rem;color:var(--gray-mid);margin-bottom:.9rem"><span style="font-weight:600;color:var(--black)">Horário:</span> <span data-horario="tatuape">Seg a Dom, 13h às 22h</span></div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Rua+Coelho+Lisboa+501+Tatuape+Sao+Paulo+SP" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;background:var(--blue);color:#fff;border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:background .2s" onmouseover="this.style.background=&#39;#0d5aa7&#39;" onmouseout="this.style.background=&#39;var(--blue)&#39;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg>
+              Como chegar
+            </a>
+            <a href="https://www.ifood.com.br/delivery/sao-paulo-sp/st-jones---tatuape-cidade-mae-do-ceu/2f19af38-f255-428f-b9ff-43940df78459" target="_blank" style="display:inline-flex;align-items:center;gap:.4rem;padding:.48rem 1rem;background:transparent;color:var(--blue);border:1.5px solid var(--blue);border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:all .2s" onmouseover="this.style.background=&#39;var(--blue)&#39;;this.style.color=&#39;#fff&#39;" onmouseout="this.style.background=&#39;transparent&#39;;this.style.color=&#39;var(--blue)&#39;">
+              Pedir agora
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Smart open/closed detection (Brasilia timezone)
+function checkLojas(){
+  const now = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Sao_Paulo'}));
+  const day = now.getDay(); // 0=dom,1=seg,...,6=sab
+  const h = now.getHours();
+  const m = now.getMinutes();
+  const t = h * 60 + m; // minutos desde meia-noite
+
+  function badge(open){
+    return open
+      ? '<span style="width:7px;height:7px;border-radius:50%;background:#16a34a;flex-shrink:0;display:inline-block"></span><span style="color:#16a34a">Aberto agora</span>'
+      : '<span style="width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;display:inline-block"></span><span style="color:#dc2626">Fechado</span>';
+  }
+
+  // OSASCO: qua(3) a dom(0) 17h-23h
+  const osascoOpen = [0,3,4,5,6].includes(day) && t >= 17*60 && t < 23*60;
+  document.getElementById('status-osasco').innerHTML = badge(osascoOpen);
+
+  // VILA MARIANA:
+  // seg(1) e ter(2): 13h-22h
+  // qua(3) a dom(0): 13h-03h30 (passa meia-noite)
+  let vmOpen = false;
+  if([1,2].includes(day)) vmOpen = t >= 13*60 && t < 22*60;
+  else if([3,4,5,6].includes(day)) vmOpen = t >= 13*60; // abre 13h vai ate 3:30 do dia seguinte
+  else if(day === 0) vmOpen = t < 3*60+30 || t >= 13*60; // domingo: madrugada (vindo do sab) ou tarde
+  document.getElementById('status-vilamariana').innerHTML = badge(vmOpen);
+
+  // TATUAPÉ: seg(1) a dom(0) 13h-22h
+  const tatuOpen = t >= 13*60 && t < 22*60;
+  document.getElementById('status-tatuape').innerHTML = badge(tatuOpen);
+}
+checkLojas();
+</script>
+
+
+<!-- FAQ -->
+<div class="sec-wrapper">
+  <div class="sec-inner">
+    <h2 class="faq-title">Como podemos te ajudar?</h2>
+    <div id="faqList">
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,0)">
+        <span>Quais meios de pagamento a St. Jones aceita?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq0">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,1)">
+        <span>Como posso cancelar meu pedido?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq1">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,2)">
+        <span>Status do meu pedido</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq2">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,3)">
+        <span>O meu pedido não chegou como esperado</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq3">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,4)">
+        <span>Meu cartão foi rejeitado</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq4">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,5)">
+        <span>Confirmação da compra?</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <div class="faq-a" id="faq5">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip" id="ctaStrip">
+  <div class="cta-text" id="ctaTextEl">Registre-se e desfrute da experiência completa:<strong id="ctaBoldEl">tenha acesso à ofertas e descontos exclusivos.</strong></div>
+  <button class="btn-reg" id="ctaBtnEl">Registrar-se</button>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div>
+      <img class="footer-logo-img" src="./index_files/1777796659229-5r4hliuklzi.png" alt="St. Jones">
+
+    </div>
+    <div class="fcol">
+      <p class="fcol-title" style="cursor:pointer" onclick="openPopup(&#39;popupQuemSomos&#39;)">Quem Somos</p>
+      <ul>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#" onclick="openPopup(&#39;popupRestaurantes&#39;);return false">Restaurantes</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#" onclick="openPopup(&#39;popupQuemSomos&#39;);return false">Institucional</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#" onclick="openFranquiasModal();return false">Franquias</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#">Trabalhe Conosco</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#">Privacidade</a></li>
+      </ul>
+    </div>
+    <div class="fcol">
+      <p class="fcol-title">Descubra</p>
+      <ul>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#lojas">Nossas Lojas</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#cardapio">Cardápio</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#promos">Promoções</a></li>
+        <li><a href="file:///C:/Users/User/Downloads/index_8.html#" onclick="openPopup(&#39;popupContato&#39;);return false">Contato</a></li>
+      </ul>
+    </div>
+    <div class="fcol">
+      <p class="fcol-title">Contato</p>
+      <a href="tel:+551136954650" style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:700;color:var(--black);text-decoration:none;margin-bottom:.6rem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.11 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.45-.45a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+        (11) 3695-4650
+      </a>
+      <p style="font-size:.8rem;color:var(--gray-mid);line-height:1.6;margin-bottom:.5rem">Siga-nas nas redes sociais</p>
+      <div class="social-row" id="footerSocialRow2" style="margin-top:.3rem"><a href="https://www.instagram.com/st.jones_" target="_blank" class="soc-btn" title="Instagram"><img src="./index_files/1777797212924-h5q3ajzl1i.png" style="width:18px;height:18px;object-fit:contain"></a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 St. Jones Foods. All rights reserved.</p>
+    <div class="footer-bottom-links">
+      <a href="file:///C:/Users/User/Downloads/index_8.html#">Privacidade</a>
+      <a href="file:///C:/Users/User/Downloads/index_8.html#">Termos e Condições</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const PASS = 'stjones2025';
+const DEF = {
+  hero:{h:'Como você quer seu pedido hoje?',btn1:'Peça e Retire',btn2:'Delivery',bg:''},
+  cats:[
+    {id:1,name:'Todos',emoji:'🍔',img:''},
+    {id:2,name:'Smash Burgers',emoji:'🥩',img:''},
+    {id:3,name:'Chicken',emoji:'🍗',img:''},
+    {id:4,name:'Acompanhamentos',emoji:'🍟',img:''},
+    {id:5,name:'Combos',emoji:'🎁',img:''},
+    {id:6,name:'Sobremesas',emoji:'🍦',img:''},
+    {id:7,name:'Bebidas',emoji:'🥤',img:''},
+    {id:8,name:'Lançamentos',emoji:'⭐',img:''}
+  ],
+  banners:[],
+  produtos:[],
+  beneficios:[
+    {id:1,emoji:'🛵',img:'',line1:'Peça para entregar ou retire',line2:'no restaurante que preferir'},
+    {id:2,emoji:'📱',img:'',line1:'Registre-se e aproveite os',line2:'benefícios e descontos!'},
+    {id:3,emoji:'⭐',img:'',line1:'A experiência St. Jones',line2:'100% pensada para você!'}
+  ],
+  app:{title:'Peça pelo nosso delivery direto',desc:'Faça seu pedido e seja o primeiro a saber das novidades. Fique por dentro de todas as nossas ofertas!',img:''},
+  brand:{title:'St. Jones',desc:'Smash burgers artesanais com blend próprio de carnes selecionadas, pão brioche tostado na hora e molhos feitos dentro de casa. Três lojas em São Paulo — Osasco, Vila Mariana e Tatuapé.',img:''},
+  cta:{text:'Registre-se e desfrute da experiência completa:',bold:'tenha acesso à ofertas e descontos exclusivos.',btn:'Registrar-se'},
+  faqs:['Quais meios de pagamento a St. Jones aceita?','Como posso cancelar meu pedido?','Status do meu pedido','O meu pedido não chegou como esperado','Meu cartão foi rejeitado','Confirmação da compra?'],
+  sociais:[
+    {id:'instagram', name:'Instagram', icon:'', url:'https://instagram.com', visible:true},
+    {id:'facebook',  name:'Facebook',  icon:'', url:'https://facebook.com',  visible:true},
+    {id:'tiktok',    name:'TikTok',    icon:'', url:'https://tiktok.com',    visible:true}
+  ]
+};
+
+let S = JSON.parse(JSON.stringify(DEF));
+try{
+  const s=localStorage.getItem('stjones4');
+  if(s){const parsed=JSON.parse(s);S=Object.assign(JSON.parse(JSON.stringify(DEF)),parsed);}
+}catch(e){}
+let _editCatId=null;
+
+// ─── SUPABASE: conteúdo + imagens persistentes ─────────────────────────────
+const SUPABASE_URL = 'https://tdlkqcxrgqplijukblvr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkbGtxY3hyZ3FwbGlqdWtibHZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NzQxMzUsImV4cCI6MjA5MzM1MDEzNX0.FkPxsdxk87ZjVYpF-mwPQMlyDAaUnnvfswfe9c87kwI';
+const SUPABASE_BUCKET = 'site-images';
+const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let _syncTimer = null;
+let _syncing = false;
+
+function isDataUrl(v){return typeof v === 'string' && v.indexOf('data:image/') === 0;}
+function extFromDataUrl(v){
+  const m = v.match(/^data:image\/(png|jpeg|jpg|webp|gif);base64,/i);
+  if(!m) return 'png';
+  return m[1].toLowerCase()==='jpeg'?'jpg':m[1].toLowerCase();
+}
+async function uploadDataUrlToSupabase(dataUrl, pathPrefix){
+  if(!supabaseClient || !isDataUrl(dataUrl)) return dataUrl;
+  const ext = extFromDataUrl(dataUrl);
+  const blob = await (await fetch(dataUrl)).blob();
+  const fileName = (pathPrefix || 'site') + '/' + Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+  const { error } = await supabaseClient.storage.from(SUPABASE_BUCKET).upload(fileName, blob, {
+    cacheControl: '3600',
+    upsert: true,
+    contentType: blob.type || ('image/' + ext)
+  });
+  if(error){ console.error('Erro upload Supabase:', error); return dataUrl; }
+  const { data } = supabaseClient.storage.from(SUPABASE_BUCKET).getPublicUrl(fileName);
+  return data.publicUrl;
+}
+async function replaceDataUrls(obj, path){
+  if(Array.isArray(obj)){
+    for(let i=0;i<obj.length;i++) obj[i] = await replaceDataUrls(obj[i], (path||'item')+'-'+i);
+    return obj;
+  }
+  if(obj && typeof obj === 'object'){
+    for(const k of Object.keys(obj)){
+      if(isDataUrl(obj[k])) obj[k] = await uploadDataUrlToSupabase(obj[k], (path||'site') + '-' + k);
+      else obj[k] = await replaceDataUrls(obj[k], (path||'site') + '-' + k);
+    }
+    return obj;
+  }
+  return obj;
+}
+async function syncToSupabase(){
+  if(!supabaseClient || _syncing) return;
+  _syncing = true;
+  try{
+    await replaceDataUrls(S, 'landing');
+    try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
+    const { error } = await supabaseClient.from('site_content').upsert({
+      id: 'landing',
+      content: S,
+      updated_at: new Date().toISOString()
+    });
+    if(error) console.error('Erro ao salvar conteúdo no Supabase:', error);
+  }catch(e){ console.error('Falha ao sincronizar com Supabase:', e); }
+  _syncing = false;
+}
+async function loadFromSupabase(){
+  if(!supabaseClient) return;
+  try{
+    const { data, error } = await supabaseClient.from('site_content').select('content').eq('id','landing').maybeSingle();
+    if(error){ console.error('Erro ao carregar Supabase:', error); return; }
+    if(data && data.content){
+      S = Object.assign(JSON.parse(JSON.stringify(DEF)), data.content);
+      try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
+      renderSite();
+    }
+  }catch(e){ console.error('Falha ao carregar Supabase:', e); }
+}
+function save(){
+  try{localStorage.setItem('stjones4',JSON.stringify(S));}catch(e){}
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(syncToSupabase, 350);
+}
+function toast(m='Salvo!'){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+
+// ─── DRAWER ──────────────────────────────────────────────────────────────────
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawerOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerOverlay').classList.remove('open');document.body.style.overflow='';}
+
+// ─── ADMIN ───────────────────────────────────────────────────────────────────
+function openAdminLogin(){document.getElementById('loginOverlay').classList.add('open');setTimeout(()=>document.getElementById('loginPass').focus(),100);}
+function doLogin(){
+  if(document.getElementById('loginPass').value===PASS){
+    document.getElementById('loginOverlay').classList.remove('open');
+    document.getElementById('loginPass').value='';
+    document.getElementById('loginErr').style.display='none';
+    document.getElementById('adminOverlay').classList.add('open');
+    renderAdmin();
+  } else {document.getElementById('loginErr').style.display='block';}
+}
+function closeAdmin(){document.getElementById('adminOverlay').classList.remove('open');renderSite();
+}
+const adminTitles={
+  hero:['Hero','Edite o topo da página'],
+  logo:['Logo','Troque o logo do site'],
+  cats:['Categorias','Edite ícones e nomes'],
+  banners:['Banners','Promoções em destaque'],
+  cardapio:['Cardápio','Produtos e preços'],
+  beneficios:['Benefícios','Ícones e textos'],
+  lojas:['Lojas','Endereços e horários'],
+  social:['Redes Sociais','Links e ícones'],
+  rodape:['Rodapé','Popups e links do rodapé'],
+  textos:['Textos','Frases e conteúdo'],
+  app:['App / Franquia','Seção de franquias']
+};
+function swTab(n,btn){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.admin-sec').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+  const info=adminTitles[n]||[n,''];
+  const t=document.getElementById('adminSectionTitle');
+  const s=document.getElementById('adminSectionSub');
+  if(t)t.textContent=info[0];
+  if(s)s.textContent=info[1];
+}
+function togForm(id){const f=document.getElementById(id);f.style.display=f.style.display==='none'?'block':'none';}
+
+function prevImg(e,prevId,imgKey){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const d=document.getElementById(prevId);
+    d.innerHTML=`<img src="${ev.target.result}" style="border-radius:8px;width:100%;max-height:75px;object-fit:cover;margin-top:.5rem">`;
+    window[imgKey]=ev.target.result;
+  };
+  r.readAsDataURL(f);
+}
+
+// ─── SAVE ACTIONS ────────────────────────────────────────────────────────────
+function saveHero(){
+  S.hero.h=document.getElementById('heroH').value||S.hero.h;
+  S.hero.btn1=document.getElementById('heroBtn1').value||S.hero.btn1;
+  S.hero.btn2=document.getElementById('heroBtn2').value||S.hero.btn2;
+  if(window._hImg){S.hero.bg=window._hImg;window._hImg=null;}
+  save();toast('Hero salvo!');applyHero();
+}
+
+function saveCat(){
+  const c=S.cats.find(c=>c.id===_editCatId);if(!c)return;
+  c.name=document.getElementById('catName').value||c.name;
+  c.emoji=document.getElementById('catEmoji').value||c.emoji;
+  if(window._catImg){c.img=window._catImg;window._catImg=null;}
+  save();toast('Categoria salva!');renderAdmin();renderCats();
+  document.getElementById('catEditForm').style.display='none';
+}
+
+function saveBanner(){
+  const t=document.getElementById('bTitle').value.trim();if(!t){toast('Digite o título');return;}
+  S.banners.push({id:Date.now(),title:t,badge:document.getElementById('bBadge').value.trim(),sub:document.getElementById('bSub').value.trim(),img:window._bImg||''});
+  window._bImg=null;save();toast('Banner salvo!');document.getElementById('bannerForm').style.display='none';renderAdmin();
+}
+
+function saveProduto(){
+  const n=document.getElementById('pNome').value.trim();if(!n){toast('Digite o nome');return;}
+  S.produtos.push({id:Date.now(),nome:n,cat:document.getElementById('pCat').value,preco:document.getElementById('pPreco').value.trim(),loja:document.getElementById('pLoja').value,desc:document.getElementById('pDesc').value.trim(),img:window._pImg||''});
+  window._pImg=null;save();toast('Produto salvo!');document.getElementById('produtoForm').style.display='none';renderAdmin();
+}
+
+function saveBenef(id){
+  const b=S.beneficios.find(b=>b.id===id);if(!b)return;
+  b.emoji=document.getElementById('bef-emoji-'+id).value||b.emoji;
+  b.line1=document.getElementById('bef-l1-'+id).value||b.line1;
+  b.line2=document.getElementById('bef-l2-'+id).value||b.line2;
+  const key='_befImg'+id;
+  if(window[key]){b.img=window[key];window[key]=null;}
+  save();toast('Benefício salvo!');renderBeneficios();
+}
+
+function saveApp(){
+  S.app.title=document.getElementById('appTitle').value||S.app.title;
+  S.app.desc=document.getElementById('appDesc').value||S.app.desc;
+  if(window._appImg){S.app.img=window._appImg;window._appImg=null;}
+  save();toast('App salvo!');applyApp();
+}
+
+function saveBrand(){
+  S.brand.title=document.getElementById('brandTitle').value||S.brand.title;
+  S.brand.desc=document.getElementById('brandDesc').value||S.brand.desc;
+  if(window._brandImg){S.brand.img=window._brandImg;window._brandImg=null;}
+  save();toast('Seção sobre salva!');applyBrand();
+}
+
+function saveCta(){
+  S.cta.text=document.getElementById('ctaText').value||S.cta.text;
+  S.cta.bold=document.getElementById('ctaBold').value||S.cta.bold;
+  S.cta.btn=document.getElementById('ctaBtn').value||S.cta.btn;
+  save();toast('CTA salvo!');applyCta();
+}
+
+function addFaq(){S.faqs.push('Nova pergunta');renderFaqAdmin();}
+function saveFaq(){
+  const inputs=document.querySelectorAll('[id^="faq-input-"]');
+  S.faqs=Array.from(inputs).map(i=>i.value.trim()).filter(Boolean);
+  save();toast('FAQ salvo!');buildFaq();
+}
+
+function delItem(type,id){S[type]=S[type].filter(i=>i.id!==id);save();renderAdmin();toast('Removido!');}
+
+// ─── RENDER ADMIN ─────────────────────────────────────────────────────────────
+function renderAdmin(){
+  // Hero
+  document.getElementById('heroH').value=S.hero.h;
+  document.getElementById('heroBtn1').value=S.hero.btn1;
+  document.getElementById('heroBtn2').value=S.hero.btn2;
+
+  // Cats list
+  document.getElementById('catsList').innerHTML=S.cats.map(c=>`
+    <div class="irow" style="cursor:pointer" onclick="editCat(${c.id})">
+      <div class="irow-thumb">${c.img?`<img src="${c.img}">`:`<span style="font-size:1.3rem">${c.emoji}</span>`}</div>
+      <div class="irow-info"><div class="irow-name">${c.name}</div><div class="irow-meta">Clique para editar</div></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:var(--blue)"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </div>`).join('');
+
+  // Banners list
+  document.getElementById('bannersList').innerHTML=S.banners.length
+    ?S.banners.map(b=>`<div class="irow"><div class="irow-thumb">${b.img?`<img src="${b.img}">`:'🖼️'}</div><div class="irow-info"><div class="irow-name">${b.title}</div><div class="irow-meta">${b.badge||''}${b.sub?' · '+b.sub:''}</div></div><button class="irow-del" onclick="delItem('banners',${b.id})">✕</button></div>`).join('')
+    :'<p style="font-size:.8rem;color:var(--gray-mid);margin-bottom:.8rem">Nenhum banner.</p>';
+
+  // Produtos list
+  document.getElementById('produtosList').innerHTML=S.produtos.length
+    ?S.produtos.map(p=>`<div class="irow"><div class="irow-thumb">${p.img?`<img src="${p.img}">`:'🍔'}</div><div class="irow-info"><div class="irow-name">${p.nome}</div><div class="irow-meta">${p.cat} · R$ ${p.preco} · ${p.loja}</div></div><button class="irow-del" onclick="delItem('produtos',${p.id})">✕</button></div>`).join('')
+    :'<p style="font-size:.8rem;color:var(--gray-mid);margin-bottom:.8rem">Nenhum produto.</p>';
+
+  // Benefícios editor
+  document.getElementById('benefList').innerHTML=S.beneficios.map(b=>`
+    <div class="admin-subsection" style="margin-bottom:.8rem">
+      <div class="admin-subsection-title"><span>${b.id}</span> Benefício ${b.id}</div>
+      <div class="frow">
+        <div class="fgroup"><label>Emoji</label><input type="text" id="bef-emoji-${b.id}" value="${b.emoji}" style="font-size:1.3rem"></div>
+        <div class="fgroup"><label>Linha 1</label><input type="text" id="bef-l1-${b.id}" value="${b.line1}"></div>
+      </div>
+      <div class="frow">
+        <div class="fgroup"><label>Linha 2 (negrito)</label><input type="text" id="bef-l2-${b.id}" value="${b.line2}"></div>
+        <div class="fgroup"><label>Foto (substitui emoji)</label><div class="upload-box" style="padding:.8rem"><input type="file" accept="image/*" onchange="(function(e){const r=new FileReader();r.onload=ev=>{document.getElementById('befPrev${b.id}').innerHTML='<img src=\\''+ev.target.result+'\\'>';window['_befImg${b.id}']=ev.target.result;};r.readAsDataURL(e.target.files[0]);})(event)"><strong style="font-size:.6rem">Upload foto</strong></div></div>
+      </div>
+      <div id="befPrev${b.id}"></div>
+      <button class="btn-save" style="margin-top:.5rem" onclick="saveBenef(${b.id})">Salvar benefício ${b.id}</button>
+    </div>`).join('');
+
+  // App
+  document.getElementById('appTitle').value=S.app.title;
+  document.getElementById('appDesc').value=S.app.desc;
+
+  // Brand
+  document.getElementById('brandTitle').value=S.brand.title;
+  document.getElementById('brandDesc').value=S.brand.desc;
+
+  // CTA
+  document.getElementById('ctaText').value=S.cta.text;
+  document.getElementById('ctaBold').value=S.cta.bold;
+  document.getElementById('ctaBtn').value=S.cta.btn;
+
+  // FAQ admin
+  renderFaqAdmin();
+  // Logo preview nav
+  const lp=document.getElementById('logoPreviewNav');
+  if(lp&&S.logo)lp.src=S.logo;
+  else if(lp){const navL=document.getElementById('navLogoImg');if(navL)lp.src=navL.src;}
+  // Logo preview footer
+  const lfp=document.getElementById('logoPreviewFooter');
+  if(lfp&&S.logoFooter)lfp.src=S.logoFooter;
+  else if(lfp){const fl=document.querySelector('.footer-logo-img');if(fl)lfp.src=fl.src;}
+  // Lojas
+  renderAdminLojas();
+  // Social
+  renderAdminSocial();
+  // Rodape popups
+  renderAdminRodape();
+}
+
+function editCat(id){
+  _editCatId=id;
+  const c=S.cats.find(c=>c.id===id);
+  var cen=document.getElementById('catEditName'); if(cen) cen.textContent=c.name;
+  document.getElementById('catName').value=c.name;
+  document.getElementById('catEmoji').value=c.emoji;
+  document.getElementById('catPrev').innerHTML=c.img?`<img src="${c.img}" style="border-radius:8px;width:100%;max-height:75px;object-fit:cover;margin-top:.5rem">`:'';
+  document.getElementById('catEditForm').style.display='block';
+  document.getElementById('catEditForm').scrollIntoView({behavior:'smooth'});
+}
+
+function renderFaqAdmin(){
+  document.getElementById('faqAdmin').innerHTML=S.faqs.map((q,i)=>`
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+      <input id="faq-input-${i}" type="text" value="${q}" style="flex:1;background:#fff;border:1.5px solid var(--gray-light);color:var(--black);padding:.55rem .85rem;font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;border-radius:8px">
+      <button onclick="S.faqs.splice(${i},1);renderFaqAdmin()" style="background:none;border:1px solid var(--gray-light);color:var(--gray-mid);width:28px;height:28px;cursor:pointer;border-radius:6px;font-size:.8rem">✕</button>
+    </div>`).join('');
+}
+
+// ─── RENDER SITE ─────────────────────────────────────────────────────────────
+function applyHero(){
+  var h1=document.getElementById('heroH1El');
+  if(h1&&S.hero.h) h1.textContent=S.hero.h;
+  // Update button text safely - find last text node
+  function setLastText(el, txt){
+    if(!el) return;
+    var nodes = el.childNodes;
+    for(var i=nodes.length-1;i>=0;i--){
+      if(nodes[i].nodeType===3){nodes[i].textContent=' '+txt;return;}
+    }
+    el.appendChild(document.createTextNode(' '+txt));
+  }
+  if(S.hero.btn1) setLastText(document.getElementById('heroBtn1El'), S.hero.btn1);
+  if(S.hero.btn2) setLastText(document.getElementById('heroBtn2El'), S.hero.btn2);
+  if(S.hero.bg){
+    var bg=document.getElementById('heroBgImg');
+    if(bg){bg.src=S.hero.bg;bg.style.display='block';}
+    var fb=document.getElementById('heroFallback');
+    if(fb) fb.style.display='none';
+  }
+}
+
+function renderCats(){
+  document.getElementById('catsInner').innerHTML=S.cats.map((c,i)=>`
+    <button class="cat-item${i===0?' active':''}" onclick="filterCat('${c.name}',this)">
+      <div class="cat-icon-wrap">${c.img?`<img src="${c.img}" alt="${c.name}">`:`<span>${c.emoji}</span>`}</div>
+      <span class="cat-label">${c.name}</span>
+    </button>`).join('');
+}
+
+function renderBanners(){
+  const g=document.getElementById('bannersGrid3');
+  const items=[...S.banners];
+  while(items.length<3)items.push(null);
+  g.innerHTML=items.slice(0,3).map(b=>b
+    ?`<div class="b3" style="${b.img?`background-image:url(${b.img});background-size:cover;background-position:center`:'background:#1a4a80'}">
+        ${b.img?`<div class="b3-ov"></div>`:''}
+        <div class="b3-cnt">
+          ${b.badge?`<span class="b3-tag">${b.badge}</span>`:''}
+          <div class="b3-title">${b.title}</div>
+          ${b.sub?`<div class="b3-sub">${b.sub}</div>`:''}
+        </div>
+      </div>`
+    :`<div class="b3-empty" onclick="openAdminLogin()">+ Adicionar banner</div>`
+  ).join('');
+}
+
+function filterCat(cat,btn){
+  document.querySelectorAll('.cat-item').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');renderProdutos(cat);
+}
+
+function renderProdutos(cat='Todos'){
+  const g=document.getElementById('prodGrid');
+  const f=cat==='Todos'?S.produtos:S.produtos.filter(p=>p.cat===cat);
+  if(!f.length){
+    g.innerHTML=`<div class="prod-empty" onclick="openAdminLogin()"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>Adicionar produto</div>`;
+    return;
+  }
+  g.innerHTML=f.map(p=>`
+    <div class="prod-card">
+      <div class="prod-img-w">${p.img?`<img src="${p.img}" alt="${p.nome}">`:'🍔'}</div>
+      <div class="prod-info">
+        <div class="prod-cat">${p.cat}</div>
+        <div class="prod-name">${p.nome}</div>
+        ${p.desc?`<div class="prod-desc">${p.desc}</div>`:''}
+        <div class="prod-price">R$ ${p.preco}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderBeneficios(){
+  document.getElementById('benefGrid').innerHTML=S.beneficios.map(b=>`
+    <div class="benef-item">
+      <div class="benef-icon-wrap" onclick="openAdminLogin()">
+        ${b.img?`<img src="${b.img}" alt="${b.line1}">`:`<span>${b.emoji}</span>`}
+      </div>
+      <p class="benef-text">${b.line1}<strong>${b.line2}</strong></p>
+    </div>`).join('');
+}
+
+function applyApp(){
+  var t=document.getElementById('appTitleEl');
+  var d=document.getElementById('appDescEl');
+  var wrap=document.getElementById('appImgWrap');
+  if(t&&S.app.title) t.textContent=S.app.title;
+  if(d&&S.app.desc) d.textContent=S.app.desc;
+  if(wrap&&S.app.img){wrap.innerHTML='<img src="'+S.app.img+'" alt="app">';wrap.style.cursor='default';}
+}
+
+function applyBrand(){
+  var bt=document.getElementById('brandTitleEl');
+  var bd=document.getElementById('brandDescEl');
+  if(bt&&S.brand.title) bt.textContent=S.brand.title;
+  if(bd&&S.brand.desc) bd.textContent=S.brand.desc;
+  const wrap=document.getElementById('brandImgWrap');
+  if(S.brand.img){wrap.innerHTML=`<img src="${S.brand.img}" alt="brand">`;}
+}
+
+function applyCta(){
+  var ct=document.getElementById('ctaTextEl');
+  var cb=document.getElementById('ctaBtnEl');
+  if(ct) ct.innerHTML=S.cta.text+'<strong id="ctaBoldEl">'+S.cta.bold+'</strong>';
+  if(cb&&S.cta.btn) cb.textContent=S.cta.btn;
+}
+
+function buildFaq(){
+  document.getElementById('faqList').innerHTML=S.faqs.map((q,i)=>`
+    <div class="faq-item">
+      <button class="faq-q" onclick="togFaq(this,${i})">
+        <span>${q}</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="17" height="17"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="faq-a" id="faq${i}">Para mais informações entre em contato com nossas lojas ou acesse nosso atendimento.</div>
+    </div>`).join('');
+}
+
+function togFaq(btn,i){
+  btn.classList.toggle('open');
+  document.getElementById('faq'+i).classList.toggle('open');
+}
+
+function prevLogoNav(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    window._logoNavImg=ev.target.result;
+    document.getElementById('logoNavPrev').innerHTML=
+      '<div style="background:var(--blue);padding:.6rem;border-radius:8px;display:inline-flex;align-items:center">' +
+      '<img src="'+ev.target.result+'" style="height:36px;width:auto;object-fit:contain"></div>';
+  };
+  r.readAsDataURL(f);
+}
+
+function prevLogoFooter(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    window._logoFooterImg=ev.target.result;
+    document.getElementById('logoFooterPrev').innerHTML=
+      '<div style="background:var(--blue-dark);padding:.6rem;border-radius:8px;display:inline-flex;align-items:center">' +
+      '<img src="'+ev.target.result+'" style="height:36px;width:auto;object-fit:contain"></div>';
+  };
+  r.readAsDataURL(f);
+}
+
+function saveLogoNav(){
+  if(!window._logoNavImg){toast('Selecione uma imagem primeiro');return;}
+  S.logo=window._logoNavImg;
+  window._logoNavImg=null;
+  save();
+  applyLogo();
+  toast('Logo do topo atualizado!');
+}
+
+function saveLogoFooter(){
+  if(!window._logoFooterImg){toast('Selecione uma imagem primeiro');return;}
+  S.logoFooter=window._logoFooterImg;
+  window._logoFooterImg=null;
+  save();
+  applyLogoFooter();
+  toast('Logo do rodape atualizado!');
+}
+
+function applyLogo(){
+  if(!S.logo) return;
+  var navLogo=document.getElementById('navLogoImg');
+  if(navLogo) navLogo.src=S.logo;
+  var loginLogo=document.getElementById('loginLogoImg');
+  if(loginLogo) loginLogo.src=S.logo;
+  var prev=document.getElementById('logoPreviewNav');
+  if(prev) prev.src=S.logo;
+}
+
+function applyLogoFooter(){
+  if(!S.logoFooter) return;
+  var footerLogo=document.querySelector('.footer-logo-img');
+  if(footerLogo) footerLogo.src=S.logoFooter;
+  var prev=document.getElementById('logoPreviewFooter');
+  if(prev) prev.src=S.logoFooter;
+}
+
+function saveLoja(n){
+  const dias = [];
+  [0,1,2,3,4,5,6].forEach(d=>{
+    const el = document.getElementById('l'+n+'-d'+d);
+    if(el && el.checked) dias.push(d);
+  });
+  S.lojas = S.lojas || [{},{},{}];
+  S.lojas[n-1] = {
+    nome: document.getElementById('l'+n+'-nome').value,
+    plat: document.getElementById('l'+n+'-plat').value,
+    end:  document.getElementById('l'+n+'-end').value,
+    horario: document.getElementById('l'+n+'-horario').value,
+    abre: parseInt(document.getElementById('l'+n+'-abre').value),
+    fecha: parseInt(document.getElementById('l'+n+'-fecha').value),
+    dias: dias,
+    link: document.getElementById('l'+n+'-link').value,
+  };
+  save(); toast('Loja salva!'); applyLojas();
+}
+
+function applyLojas(){
+  if(!S.lojas) return;
+  S.lojas.forEach((l,i)=>{
+    if(!l || !l.nome) return;
+    const ids = ['osasco','vilamariana','tatuape'];
+    const id = ids[i];
+    // Update horario text
+    const hEl = document.querySelector('[data-horario="'+id+'"]');
+    if(hEl) hEl.textContent = l.horario;
+    // Update endereco
+    const eEl = document.querySelector('[data-end="'+id+'"]');
+    if(eEl) eEl.innerHTML = l.end.replace('—','<br>');
+    // Update nome
+    const nEl = document.querySelector('[data-nome="'+id+'"]');
+    if(nEl) nEl.textContent = l.nome;
+    // Update link
+    const lEl = document.querySelector('[data-link="'+id+'"]');
+    if(lEl) lEl.href = l.link;
+    // Recalc status
+    checkLojas();
+  });
+}
+
+function renderAdminLojas(){
+  if(!S.lojas) return;
+  const names = ['osasco','vilamariana','tatuape'];
+  S.lojas.forEach((l,i)=>{
+    if(!l||!l.nome) return;
+    const n = i+1;
+    const set = (id,val)=>{const el=document.getElementById(id);if(el)el.value=val;};
+    set('l'+n+'-nome', l.nome);
+    set('l'+n+'-end', l.end);
+    set('l'+n+'-horario', l.horario);
+    set('l'+n+'-abre', l.abre);
+    set('l'+n+'-fecha', l.fecha);
+    set('l'+n+'-link', l.link);
+    if(l.plat){const sel=document.getElementById('l'+n+'-plat');if(sel)sel.value=l.plat;}
+    [0,1,2,3,4,5,6].forEach(d=>{
+      const cb=document.getElementById('l'+n+'-d'+d);
+      if(cb) cb.checked = l.dias ? l.dias.includes(d) : true;
+    });
+  });
+}
+
+let _editSocialId = null;
+
+function getSociais(){ return S.sociais || JSON.parse(JSON.stringify(DEF.sociais)); }
+
+function renderAdminSocial(){
+  var list = document.getElementById('socialList');
+  if(!list) return;
+  var sociais = getSociais();
+  if(!sociais.length){
+    list.innerHTML = '<p style="font-size:.8rem;color:var(--gray-mid);margin-bottom:.8rem">Nenhuma rede. Adicione abaixo.</p>';
+    return;
+  }
+  list.innerHTML = '';
+  sociais.forEach(function(s){
+    var row = document.createElement('div');
+    row.className = 'irow';
+
+    // Thumb
+    var thumb = document.createElement('div');
+    thumb.className = 'irow-thumb';
+    if(s.icon){
+      var img = document.createElement('img');
+      img.src = s.icon; img.alt = s.name;
+      img.style.cssText = 'width:100%;height:100%;object-fit:contain;border-radius:4px';
+      thumb.appendChild(img);
+    } else {
+      var emojis = {instagram:'📸',facebook:'👥',tiktok:'🎵',whatsapp:'💬',twitter:'🐦'};
+      thumb.textContent = emojis[s.id] || '🔗';
+      thumb.style.fontSize = '1.2rem';
+    }
+
+    // Info
+    var info = document.createElement('div');
+    info.className = 'irow-info';
+    var visible = s.visible !== false;
+    info.innerHTML = '<div class="irow-name">' + s.name + '</div>' +
+      '<div class="irow-meta" style="color:' + (visible?'#16a34a':'#dc2626') + '">' +
+      (visible ? 'Visível' : 'Oculta') + '</div>';
+
+    // Actions
+    var acts = document.createElement('div');
+    acts.style.cssText = 'display:flex;gap:.3rem;flex-shrink:0';
+
+    var btnVis = document.createElement('button');
+    btnVis.className = 'btn-icon';
+    btnVis.title = visible ? 'Ocultar' : 'Mostrar';
+    btnVis.textContent = visible ? '👁' : '🚫';
+    btnVis.style.cssText = visible ? 'color:#16a34a;border-color:#bbf7d0' : 'color:#dc2626;border-color:#fecaca';
+    btnVis.onclick = (function(id){ return function(){ toggleSocialVisible(id); }; })(s.id);
+
+    var btnEdit = document.createElement('button');
+    btnEdit.className = 'btn-icon';
+    btnEdit.title = 'Editar';
+    btnEdit.textContent = '✏️';
+    btnEdit.style.cssText = 'color:var(--blue);border-color:#bfdbfe';
+    btnEdit.onclick = (function(id){ return function(){ editSocial(id); }; })(s.id);
+
+    var btnDel = document.createElement('button');
+    btnDel.className = 'btn-icon';
+    btnDel.title = 'Deletar';
+    btnDel.textContent = '✕';
+    btnDel.style.cssText = 'color:#dc2626;border-color:#fecaca';
+    btnDel.onclick = (function(id){ return function(){ deleteSocial(id); }; })(s.id);
+
+    acts.appendChild(btnVis);
+    acts.appendChild(btnEdit);
+    acts.appendChild(btnDel);
+
+    row.appendChild(thumb);
+    row.appendChild(info);
+    row.appendChild(acts);
+    list.appendChild(row);
+  });
+}
+
+function toggleSocialVisible(id){
+  if(!S.sociais) S.sociais = getSociais();
+  var s = S.sociais.find(function(s){return s.id===id;});
+  if(!s) return;
+  s.visible = s.visible === false ? true : false;
+  save(); renderAdminSocial(); applySociais();
+  toast(s.visible ? 'Rede visível!' : 'Rede ocultada!');
+}
+
+function deleteSocial(id){
+  if(!confirm('Deletar esta rede social?')) return;
+  if(!S.sociais) S.sociais = getSociais();
+  S.sociais = S.sociais.filter(function(s){return s.id!==id;});
+  save(); renderAdminSocial(); applySociais();
+  toast('Rede removida!');
+}
+
+function addSocial(){
+  var nome = document.getElementById('sn-nome').value.trim();
+  var url = document.getElementById('sn-url').value.trim();
+  if(!nome){toast('Digite o nome da rede');return;}
+  if(!S.sociais) S.sociais = getSociais();
+  S.sociais.push({
+    id: 'rede_'+Date.now(),
+    name: nome,
+    url: url,
+    icon: window._snImg||'',
+    visible: true
+  });
+  window._snImg = null;
+  document.getElementById('sn-nome').value='';
+  document.getElementById('sn-url').value='';
+  document.getElementById('snPrev').innerHTML='';
+  document.getElementById('socialNewForm').style.display='none';
+  save(); renderAdminSocial(); applySociais();
+  toast('Rede adicionada!');
+}
+
+function editSocial(id){
+  _editSocialId = id;
+  var s = getSociais().find(function(s){return s.id===id;});
+  if(!s) return;
+  var sen=document.getElementById('socialEditName'); if(sen) sen.textContent=s.name;
+  document.getElementById('social-nome').value = s.name||'';
+  document.getElementById('social-url').value = s.url||'';
+  document.getElementById('socialPrev').innerHTML = s.icon
+    ? '<img src="'+s.icon+'" style="height:36px;border-radius:6px;margin-top:.5rem">':'';
+  document.getElementById('socialEditForm').style.display='block';
+  document.getElementById('socialEditForm').scrollIntoView({behavior:'smooth'});
+}
+
+function saveSocial(){
+  if(!_editSocialId) return;
+  if(!S.sociais) S.sociais = getSociais();
+  var s = S.sociais.find(function(s){return s.id===_editSocialId;});
+  if(!s) return;
+  s.name = document.getElementById('social-nome').value.trim() || s.name;
+  s.url = document.getElementById('social-url').value.trim();
+  if(window._socialImg){s.icon=window._socialImg;window._socialImg=null;}
+  save(); toast('Rede salva!'); renderAdminSocial(); applySociais();
+  document.getElementById('socialEditForm').style.display='none';
+}
+
+function applySociais(){
+  var sociais = getSociais();
+  var visiveis = sociais.filter(function(s){return s.visible!==false;});
+  var markup = visiveis.map(function(s){
+    var label = s.name.substring(0,2).toLowerCase();
+    var inner = s.icon
+      ? '<img src="'+s.icon+'" style="width:18px;height:18px;object-fit:contain">'
+      : label;
+    return '<a href="'+(s.url||'#')+'" target="_blank" class="soc-btn" title="'+s.name+'">'+inner+'</a>';
+  }).join('');
+  var r1 = document.getElementById('footerSocialRow');
+  var r2 = document.getElementById('footerSocialRow2');
+  if(r2) r2.innerHTML = markup;
+}
+
+function savePopupQuemSomos(){
+  if(!S.popups) S.popups = {};
+  S.popups.quemsomos = {
+    tag:   document.getElementById('qs-tag').value.trim(),
+    title: document.getElementById('qs-title').value.trim(),
+    text:  document.getElementById('qs-text').value.trim()
+  };
+  save(); toast('Quem Somos salvo!');
+}
+
+function savePopupContato(){
+  if(!S.popups) S.popups = {};
+  S.popups.contato = {
+    footer: document.getElementById('ct-footer-msg').value.trim()
+  };
+  var fMsg = document.querySelector('#contatoForm p');
+  if(fMsg && S.popups.contato.footer) fMsg.textContent = S.popups.contato.footer;
+  save(); toast('Contato salvo!');
+}
+
+function renderAdminRodape(){
+  var d = S.popups && S.popups.quemsomos ? S.popups.quemsomos : {};
+  var qs_tag = document.getElementById('qs-tag');
+  var qs_title = document.getElementById('qs-title');
+  var qs_text = document.getElementById('qs-text');
+  if(qs_tag) qs_tag.value = d.tag || '';
+  if(qs_title) qs_title.value = d.title || '';
+  if(qs_text) qs_text.value = d.text || '';
+  var dc = S.popups && S.popups.contato ? S.popups.contato : {};
+  var ct = document.getElementById('ct-footer-msg');
+  if(ct) ct.value = dc.footer || '';
+}
+
+function renderSite(){
+  applyHero();applyLogo();applyLogoFooter();renderCats();renderBanners();renderProdutos();renderBeneficios();applyApp();applyBrand();applyCta();buildFaq();applyLojas();applySociais();
+}
+
+// Renderiza conteúdo local/padrão e depois busca o que estiver salvo no Supabase.
+renderSite();
+loadFromSupabase();
+
+</script>
+<!-- MODAL FRANQUIAS -->
+<div class="modal-overlay" id="franquiasModal" onclick="closeFranquiasModal(event)">
+  <div class="modal-box">
+    <div class="modal-header-wrap">
+      <button class="modal-close" onclick="closeFranquiasModalBtn()">✕</button>
+      <div class="modal-header">
+        <p class="modal-tag">Seja um franqueado</p>
+        <h2 class="modal-title">Abra sua St. Jones</h2>
+        <p class="modal-sub">Faça parte da nossa rede. Preencha o formulário e nossa equipe entrará em contato em até 48 horas.</p>
+      </div>
+      <hr class="modal-divider">
+    </div>
+    <div class="modal-body">
+      <div id="franquiasForm">
+        <div class="frm-row">
+          <div class="frm-group">
+            <label>Nome completo</label>
+            <input type="text" id="fq-nome" placeholder="Seu nome">
+          </div>
+          <div class="frm-group">
+            <label>Cidade de interesse</label>
+            <input type="text" id="fq-cidade" placeholder="Cidade — Estado">
+          </div>
+        </div>
+        <div class="frm-row">
+          <div class="frm-group">
+            <label>E-mail</label>
+            <input type="email" id="fq-email" placeholder="seu@email.com">
+          </div>
+          <div class="frm-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" id="fq-tel" placeholder="(11) 99999-9999">
+          </div>
+        </div>
+        <div class="frm-row full">
+          <div class="frm-group">
+            <label>Capital disponível para investimento</label>
+            <div class="capital-options">
+              <input type="radio" name="capital" id="cap1" class="capital-option" value="Até R$ 100 mil">
+              <label for="cap1">Até R$ 100 mil</label>
+              <input type="radio" name="capital" id="cap2" class="capital-option" value="R$ 100k a R$ 250k">
+              <label for="cap2">R$ 100k a R$ 250k</label>
+              <input type="radio" name="capital" id="cap3" class="capital-option" value="R$ 250k a R$ 500k">
+              <label for="cap3">R$ 250k a R$ 500k</label>
+              <input type="radio" name="capital" id="cap4" class="capital-option" value="Acima de R$ 500k">
+              <label for="cap4">Acima de R$ 500k</label>
+            </div>
+          </div>
+        </div>
+        <div class="frm-row full" style="margin-top:.8rem">
+          <div class="frm-group">
+            <label>Mensagem (opcional)</label>
+            <textarea id="fq-msg" placeholder="Conte um pouco sobre você e por que quer ser um franqueado St. Jones..."></textarea>
+          </div>
+        </div>
+        <button class="btn-franquia" onclick="enviarFranquia()">Enviar meu interesse</button>
+        <p style="font-size:.7rem;color:var(--gray-mid);text-align:center;margin-top:.8rem;line-height:1.5">Seus dados são confidenciais e usados apenas para contato sobre franquias.</p>
+      </div>
+      <div class="modal-success" id="franquiasSuccess">
+        <div class="modal-success-icon">✅</div>
+        <h3>Interesse recebido!</h3>
+        <p>Obrigado pelo interesse em ser um franqueado St. Jones.<br>Nossa equipe vai entrar em contato em até <strong>48 horas</strong>.</p>
+        <button onclick="closeFranquiasModalBtn()" style="margin-top:1.5rem;padding:.65rem 2rem;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+function openPopup(id){
+  var el = document.getElementById(id);
+  if(!el) return;
+  // Reset contato form if needed
+  if(id==='popupContato'){
+    document.getElementById('contatoForm').style.display='block';
+    document.getElementById('contatoSuccess').style.display='none';
+  }
+  // Load quem somos content
+  if(id==='popupQuemSomos'){
+    var d = S.popups && S.popups.quemsomos ? S.popups.quemsomos : {};
+    var tag = document.getElementById('qs-tag-display');
+    var title = document.getElementById('qs-title-display');
+    var text = document.getElementById('qs-text-display');
+    if(tag) tag.textContent = d.tag || 'Nossa história';
+    if(title) title.textContent = d.title || 'Quem Somos';
+    if(text) text.textContent = d.text || 'Somos a St. Jones, uma hamburgueria artesanal com paixão por smash burgers de qualidade.';
+  }
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePopup(id, e){
+  if(e && e.target !== document.getElementById(id)) return;
+  var el = document.getElementById(id);
+  if(el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function enviarContato(){
+  var nome = document.getElementById('ct-nome').value.trim();
+  var email = document.getElementById('ct-email').value.trim();
+  var msg = document.getElementById('ct-msg').value.trim();
+  if(!nome || !email || !msg){ alert('Preencha nome, e-mail e mensagem.'); return; }
+  var tel = document.getElementById('ct-tel').value.trim();
+  var texto = 'Contato pelo site St. Jones' +
+    String.fromCharCode(10) + String.fromCharCode(10) +
+    'Nome: ' + nome +
+    String.fromCharCode(10) + 'Email: ' + email +
+    (tel ? String.fromCharCode(10) + 'Telefone: ' + tel : '') +
+    String.fromCharCode(10) + 'Mensagem: ' + msg;
+  document.getElementById('contatoForm').style.display = 'none';
+  document.getElementById('contatoSuccess').style.display = 'block';
+  setTimeout(function(){
+    window.open('https://wa.me/5511994440000?text=' + encodeURIComponent(texto), '_blank');
+  }, 600);
+}
+
+// ─── IMAGE EDITOR ─────────────────────────────────────────────────
+var _ie = {
+  img: null, zoom: 100, rotate: 0, bright: 0,
+  offsetX: 0, offsetY: 0, dragging: false,
+  lastX: 0, lastY: 0, shape: 'rect',
+  callback: null, callbackKey: null,
+  cropW: 320, cropH: 240, cropX: 160, cropY: 40
+};
+
+function openImgEditor(file, callbackFn, callbackKey, shape){
+  _ie.shape = shape || 'rect';
+  _ie.callback = callbackFn;
+  _ie.callbackKey = callbackKey;
+  _ie.zoom = 100; _ie.rotate = 0; _ie.bright = 0;
+  _ie.offsetX = 0; _ie.offsetY = 0;
+  document.getElementById('ieZoom').value = 100;
+  document.getElementById('ieRotate').value = 0;
+  document.getElementById('ieBright').value = 0;
+  setCropShape(_ie.shape);
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      _ie.img = img;
+      _ie.offsetX = 0; _ie.offsetY = 0;
+      updateEditor();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('imgEditorOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setupEditorDrag();
+}
+
+function closeImgEditor(){
+  document.getElementById('imgEditorOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setCropShape(shape){
+  _ie.shape = shape;
+  ['shapeRect','shapeSquare','shapeCircle','shapeWide'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.classList.remove('active');
+  });
+  var btn = document.getElementById('shape' + shape.charAt(0).toUpperCase() + shape.slice(1));
+  if(btn) btn.classList.add('active');
+  var cw = 640, ch = 320;
+  if(shape==='square')  {_ie.cropW=240;_ie.cropH=240;_ie.cropX=(cw-240)/2;_ie.cropY=(ch-240)/2;}
+  else if(shape==='circle'){_ie.cropW=240;_ie.cropH=240;_ie.cropX=(cw-240)/2;_ie.cropY=(ch-240)/2;}
+  else if(shape==='wide') {_ie.cropW=580;_ie.cropH=200;_ie.cropX=(cw-580)/2;_ie.cropY=(ch-200)/2;}
+  else                    {_ie.cropW=380;_ie.cropH=260;_ie.cropX=(cw-380)/2;_ie.cropY=(ch-260)/2;}
+  updateCropGuide();
+  updateEditor();
+}
+
+function updateCropGuide(){
+  var x=_ie.cropX, y=_ie.cropY, w=_ie.cropW, h=_ie.cropH;
+  var rx = (_ie.shape==='circle') ? Math.min(w,h)/2 : 0;
+  var hole = document.getElementById('cropHole');
+  var border = document.getElementById('cropBorder');
+  if(hole){hole.setAttribute('x',x);hole.setAttribute('y',y);hole.setAttribute('width',w);hole.setAttribute('height',h);hole.setAttribute('rx',rx);}
+  if(border){border.setAttribute('x',x);border.setAttribute('y',y);border.setAttribute('width',w);border.setAttribute('height',h);border.setAttribute('rx',rx);}
+  var lines = document.querySelectorAll('#imgGuide line');
+  if(lines[0]){lines[0].setAttribute('x1',x+w/3);lines[0].setAttribute('x2',x+w/3);lines[0].setAttribute('y1',y);lines[0].setAttribute('y2',y+h);}
+  if(lines[1]){lines[1].setAttribute('x1',x+2*w/3);lines[1].setAttribute('x2',x+2*w/3);lines[1].setAttribute('y1',y);lines[1].setAttribute('y2',y+h);}
+  if(lines[2]){lines[2].setAttribute('x1',x);lines[2].setAttribute('x2',x+w);lines[2].setAttribute('y1',y+h/3);lines[2].setAttribute('y2',y+h/3);}
+  if(lines[3]){lines[3].setAttribute('x1',x);lines[3].setAttribute('x2',x+w);lines[3].setAttribute('y1',y+2*h/3);lines[3].setAttribute('y2',y+2*h/3);}
+}
+
+function updateEditor(){
+  if(!_ie.img) return;
+  var zoom = parseInt(document.getElementById('ieZoom').value);
+  var rot  = parseInt(document.getElementById('ieRotate').value);
+  var bright = parseInt(document.getElementById('ieBright').value);
+  _ie.zoom=zoom; _ie.rotate=rot; _ie.bright=bright;
+  document.getElementById('ieZoomVal').textContent = zoom+'%';
+  document.getElementById('ieRotateVal').textContent = rot+'°';
+  document.getElementById('ieBrightVal').textContent = bright;
+  var canvas = document.getElementById('imgEditorCanvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,640,320);
+  ctx.save();
+  ctx.filter = 'brightness('+(100+bright)+'%)';
+  ctx.translate(320 + _ie.offsetX, 160 + _ie.offsetY);
+  ctx.rotate(rot * Math.PI / 180);
+  var scale = zoom / 100;
+  var w = _ie.img.width * scale;
+  var h = _ie.img.height * scale;
+  ctx.drawImage(_ie.img, -w/2, -h/2, w, h);
+  ctx.restore();
+  updatePreviews(canvas);
+}
+
+function updatePreviews(srcCanvas){
+  var x=_ie.cropX, y=_ie.cropY, w=_ie.cropW, h=_ie.cropH;
+  function drawPreview(id, pw, ph, circle){
+    var pc = document.getElementById(id);
+    if(!pc) return;
+    var pctx = pc.getContext('2d');
+    pctx.clearRect(0,0,pw,ph);
+    if(circle){ pctx.save(); pctx.beginPath(); pctx.arc(pw/2,ph/2,Math.min(pw,ph)/2,0,Math.PI*2); pctx.clip(); }
+    pctx.drawImage(srcCanvas, x, y, w, h, 0, 0, pw, ph);
+    if(circle) pctx.restore();
+  }
+  drawPreview('prevCircle', 52, 52, true);
+  drawPreview('prevSquare', 64, 64, false);
+  drawPreview('prevRect', 120, 64, false);
+}
+
+function applyEditedImg(){
+  if(!_ie.img) return;
+  var x=_ie.cropX, y=_ie.cropY, w=_ie.cropW, h=_ie.cropH;
+  var srcCanvas = document.getElementById('imgEditorCanvas');
+  var out = document.createElement('canvas');
+  out.width = w; out.height = h;
+  var octx = out.getContext('2d');
+  if(_ie.shape==='circle'){
+    octx.save(); octx.beginPath();
+    octx.arc(w/2,h/2,Math.min(w,h)/2,0,Math.PI*2); octx.clip();
+  }
+  octx.drawImage(srcCanvas, x, y, w, h, 0, 0, w, h);
+  if(_ie.shape==='circle') octx.restore();
+  var dataUrl = out.toDataURL('image/png');
+  if(_ie.callback) _ie.callback(dataUrl, _ie.callbackKey);
+  closeImgEditor();
+}
+
+function setupEditorDrag(){
+  var canvas = document.getElementById('imgEditorCanvas');
+  if(canvas._dragSetup) return;
+  canvas._dragSetup = true;
+  canvas.addEventListener('mousedown', function(e){ _ie.dragging=true; _ie.lastX=e.clientX; _ie.lastY=e.clientY; });
+  canvas.addEventListener('touchstart', function(e){ _ie.dragging=true; _ie.lastX=e.touches[0].clientX; _ie.lastY=e.touches[0].clientY; },{passive:true});
+  function onMove(x,y){
+    if(!_ie.dragging) return;
+    _ie.offsetX += x - _ie.lastX; _ie.offsetY += y - _ie.lastY;
+    _ie.lastX=x; _ie.lastY=y;
+    updateEditor();
+  }
+  window.addEventListener('mousemove', function(e){ onMove(e.clientX, e.clientY); });
+  window.addEventListener('touchmove', function(e){ onMove(e.touches[0].clientX, e.touches[0].clientY); },{passive:true});
+  window.addEventListener('mouseup', function(){ _ie.dragging=false; });
+  window.addEventListener('touchend', function(){ _ie.dragging=false; });
+}
+
+// Override prevImg to open the editor instead of directly using the file
+function prevImg(e, prevId, imgKey){
+  var file = e.target.files[0];
+  if(!file) return;
+  // Determine shape based on context
+  var shape = 'rect';
+  if(prevId.toLowerCase().indexOf('logo') >= 0) shape = 'square';
+  if(prevId.toLowerCase().indexOf('cat') >= 0) shape = 'circle';
+  if(prevId.toLowerCase().indexOf('social') >= 0) shape = 'square';
+  if(prevId.toLowerCase().indexOf('benef') >= 0) shape = 'circle';
+  openImgEditor(file, function(dataUrl, key){
+    window[key] = dataUrl;
+    var prev = document.getElementById(prevId);
+    if(prev){
+      prev.innerHTML = '<img src="'+dataUrl+'" style="max-width:100%;max-height:80px;border-radius:8px;margin-top:.5rem;object-fit:contain">';
+    }
+  }, imgKey, shape);
+}
+
+function openFranquiasModal(){
+  document.getElementById('franquiasModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeFranquiasModalBtn(){
+  document.getElementById('franquiasModal').classList.remove('open');
+  document.body.style.overflow='';
+  document.getElementById('franquiasForm').style.display='block';
+  document.getElementById('franquiasSuccess').style.display='none';
+}
+function closeFranquiasModal(e){
+  if(e.target===document.getElementById('franquiasModal')) closeFranquiasModalBtn();
+}
+function enviarFranquia(){
+  var nome=document.getElementById('fq-nome').value.trim();
+  var email=document.getElementById('fq-email').value.trim();
+  var tel=document.getElementById('fq-tel').value.trim();
+  var cidade=document.getElementById('fq-cidade').value.trim();
+  var capitalEl=document.querySelector('input[name="capital"]:checked');
+  if(!nome||!email||!tel||!cidade){alert('Preencha nome, e-mail, telefone e cidade.');return;}
+  if(!capitalEl){alert('Selecione o capital disponivel.');return;}
+  var capital=capitalEl.value;
+  var msg=document.getElementById('fq-msg').value.trim();
+  var texto='Novo interesse em franquia St. Jones'+
+    String.fromCharCode(10)+String.fromCharCode(10)+'Nome: '+nome+
+    String.fromCharCode(10)+'Email: '+email+
+    String.fromCharCode(10)+'Telefone: '+tel+
+    String.fromCharCode(10)+'Cidade: '+cidade+
+    String.fromCharCode(10)+'Capital: '+capital+
+    (msg ? String.fromCharCode(10)+'Mensagem: '+msg : '');
+  document.getElementById('franquiasForm').style.display='none';
+  document.getElementById('franquiasSuccess').style.display='block';
+  setTimeout(function(){
+    window.open('https://wa.me/5511994440000?text='+encodeURIComponent(texto),'_blank');
+  },800);
+}
+</script>
+<!-- IMAGE EDITOR MODAL -->
+<div class="img-editor-overlay" id="imgEditorOverlay">
+  <div class="img-editor-box">
+    <div class="img-editor-header">
+      <div class="img-editor-title">Editor de imagem</div>
+      <button class="img-editor-close" onclick="closeImgEditor()">✕</button>
+    </div>
+    <div class="img-editor-canvas-wrap" id="imgEditorWrap">
+      <canvas id="imgEditorCanvas" class="img-editor-canvas" width="640" height="320"></canvas>
+      <svg class="img-editor-overlay-guide" id="imgGuide" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <mask id="cropMask">
+            <rect width="640" height="320" fill="white"></rect>
+            <rect id="cropHole" x="160" y="40" width="320" height="240" rx="0" fill="black"></rect>
+          </mask>
+        </defs>
+        <rect width="640" height="320" fill="rgba(0,0,0,0.5)" mask="url(#cropMask)"></rect>
+        <rect id="cropBorder" x="160" y="40" width="320" height="240" rx="0" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-dasharray="6 3"></rect>
+        <line x1="266" y1="40" x2="266" y2="280" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"></line>
+        <line x1="373" y1="40" x2="373" y2="280" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"></line>
+        <line x1="160" y1="120" x2="480" y2="120" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"></line>
+        <line x1="160" y1="200" x2="480" y2="200" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"></line>
+      </svg>
+    </div>
+    <div class="img-editor-controls">
+      <div class="img-ctrl-row">
+        <span class="img-ctrl-label">Zoom</span>
+        <input type="range" id="ieZoom" min="10" max="300" value="100" oninput="updateEditor()">
+        <span class="img-ctrl-val" id="ieZoomVal">100%</span>
+      </div>
+      <div class="img-ctrl-row">
+        <span class="img-ctrl-label">Girar</span>
+        <input type="range" id="ieRotate" min="-180" max="180" value="0" oninput="updateEditor()">
+        <span class="img-ctrl-val" id="ieRotateVal">0°</span>
+      </div>
+      <div class="img-ctrl-row">
+        <span class="img-ctrl-label">Brilho</span>
+        <input type="range" id="ieBright" min="-100" max="100" value="0" oninput="updateEditor()">
+        <span class="img-ctrl-val" id="ieBrightVal">0</span>
+      </div>
+    </div>
+    <div class="img-editor-preview">
+      <span class="img-editor-preview-label">Preview</span>
+      <canvas id="prevCircle" width="52" height="52" class="img-preview-circle" title="Circular (ícones)"></canvas>
+      <canvas id="prevSquare" width="64" height="64" class="img-preview-rect" title="Quadrado"></canvas>
+      <canvas id="prevRect" width="120" height="64" class="img-preview-rect" title="Banner"></canvas>
+      <div style="flex:1;font-size:.7rem;color:rgba(255,255,255,.35);line-height:1.5">Arraste para reposicionar · Use o slider para zoom</div>
+    </div>
+    <div class="img-editor-btns">
+      <div class="btn-crop-shapes">
+        <button class="btn-crop-shape active" id="shapeRect" onclick="setCropShape(&#39;rect&#39;)">▭ Livre</button>
+        <button class="btn-crop-shape" id="shapeSquare" onclick="setCropShape(&#39;square&#39;)">▢ Quadrado</button>
+        <button class="btn-crop-shape" id="shapeCircle" onclick="setCropShape(&#39;circle&#39;)">○ Círculo</button>
+        <button class="btn-crop-shape" id="shapeWide" onclick="setCropShape(&#39;wide&#39;)">▬ Banner</button>
+      </div>
+      <button class="btn-apply-img" onclick="applyEditedImg()">Aplicar imagem</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP: QUEM SOMOS -->
+<div class="popup-overlay" id="popupQuemSomos" onclick="closePopup(&#39;popupQuemSomos&#39;,event)">
+  <div class="popup-box">
+    <div class="popup-header">
+      <button class="popup-close" onclick="closePopup(&#39;popupQuemSomos&#39;)">✕</button>
+      <p class="popup-tag" id="qs-tag-display">Nossa história</p>
+      <h2 class="popup-title" id="qs-title-display">Quem Somos</h2>
+    </div>
+    <hr class="popup-divider">
+    <div class="popup-body">
+      <p class="popup-text" id="qs-text-display">Carregando...</p>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP: RESTAURANTES -->
+<div class="popup-overlay" id="popupRestaurantes" onclick="closePopup(&#39;popupRestaurantes&#39;,event)">
+  <div class="popup-box">
+    <div class="popup-header">
+      <button class="popup-close" onclick="closePopup(&#39;popupRestaurantes&#39;)">✕</button>
+      <p class="popup-tag">Nossas unidades</p>
+      <h2 class="popup-title">Restaurantes</h2>
+    </div>
+    <hr class="popup-divider">
+    <div class="popup-body">
+      <div class="popup-loja-card">
+        <div class="popup-loja-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg></div>
+        <div>
+          <div class="popup-loja-nome">Osasco</div>
+          <div class="popup-loja-info">Av. Pau Brasil, 264 — Cidade das Flores<br>Qua a Dom, 17h às 23h</div>
+          <div class="popup-loja-links">
+            <a href="https://pedido.brendi.com.br/stjones/?utm_source=Whatsapp" target="_blank" class="popup-loja-btn primary">Pedir agora</a>
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Av+Pau+Brasil+264+Osasco+SP" target="_blank" class="popup-loja-btn">Como chegar</a>
+          </div>
+        </div>
+      </div>
+      <div class="popup-loja-card">
+        <div class="popup-loja-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg></div>
+        <div>
+          <div class="popup-loja-nome">Vila Mariana</div>
+          <div class="popup-loja-info">Rua França Pinto, 193 — Vila Mariana<br>Seg a Ter 13h–22h · Qua a Dom 13h–3h30</div>
+          <div class="popup-loja-links">
+            <a href="https://www.ifood.com.br/delivery/sao-paulo-sp/st-jones---vila-mariana-vila-mariana/d85c6320-9139-4357-a031-406b9fb445d5" target="_blank" class="popup-loja-btn primary">Pedir agora</a>
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Rua+Franca+Pinto+193+Vila+Mariana+SP" target="_blank" class="popup-loja-btn">Como chegar</a>
+          </div>
+        </div>
+      </div>
+      <div class="popup-loja-card">
+        <div class="popup-loja-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path><circle cx="12" cy="9" r="2.5"></circle></svg></div>
+        <div>
+          <div class="popup-loja-nome">Tatuapé</div>
+          <div class="popup-loja-info">Rua Coelho Lisboa, 501 — Cidade Mãe do Céu<br>Seg a Dom, 13h às 22h</div>
+          <div class="popup-loja-links">
+            <a href="https://www.ifood.com.br/delivery/sao-paulo-sp/st-jones---tatuape-cidade-mae-do-ceu/2f19af38-f255-428f-b9ff-43940df78459" target="_blank" class="popup-loja-btn primary">Pedir agora</a>
+            <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Rua+Coelho+Lisboa+501+Tatuape+SP" target="_blank" class="popup-loja-btn">Como chegar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP: CONTATO -->
+<div class="popup-overlay" id="popupContato" onclick="closePopup(&#39;popupContato&#39;,event)">
+  <div class="popup-box">
+    <div class="popup-header">
+      <button class="popup-close" onclick="closePopup(&#39;popupContato&#39;)">✕</button>
+      <p class="popup-tag">Fale com a gente</p>
+      <h2 class="popup-title">Contato</h2>
+    </div>
+    <hr class="popup-divider">
+    <div class="popup-body">
+      <div style="display:flex;align-items:center;gap:.8rem;background:var(--offwhite);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1.1rem">
+        <div style="width:36px;height:36px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.11 1.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.45-.45a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path></svg>
+        </div>
+        <div>
+          <div style="font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-mid);margin-bottom:.1rem">Telefone</div>
+          <a href="tel:+551136954650" style="font-size:1rem;font-weight:700;color:var(--black);text-decoration:none">(11) 3695-4650</a>
+        </div>
+      </div>
+      <div id="contatoForm" class="contact-form">
+        <div class="frm-row">
+          <div class="fgroup"><label>Nome</label><input type="text" id="ct-nome" placeholder="Seu nome"></div>
+          <div class="fgroup"><label>E-mail</label><input type="email" id="ct-email" placeholder="seu@email.com"></div>
+        </div>
+        <div class="frm-row full">
+          <div class="fgroup"><label>Telefone (opcional)</label><input type="tel" id="ct-tel" placeholder="(11) 99999-9999"></div>
+        </div>
+        <div class="frm-row full">
+          <div class="fgroup"><label>Mensagem</label><textarea id="ct-msg" placeholder="Como podemos ajudar?" style="min-height:110px"></textarea></div>
+        </div>
+        <button class="btn-franquia" onclick="enviarContato()" style="margin-top:.5rem">Enviar mensagem</button>
+        <p style="font-size:.7rem;color:var(--gray-mid);text-align:center;margin-top:.6rem">Respondemos em até 24 horas</p>
+      </div>
+      <div class="popup-success" id="contatoSuccess" style="display:none">
+        <div class="popup-success-icon">✅</div>
+        <h3 style="font-size:1.1rem;font-weight:700;color:var(--black);margin-bottom:.4rem">Mensagem enviada!</h3>
+        <p style="font-size:.85rem;color:var(--gray-mid)">Obrigado pelo contato. Retornaremos em breve.</p>
+        <button onclick="closePopup(&#39;popupContato&#39;)" style="margin-top:1.2rem;padding:.6rem 1.8rem;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:&#39;DM Sans&#39;,sans-serif;font-size:.85rem;font-weight:700;cursor:pointer">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body></html>
