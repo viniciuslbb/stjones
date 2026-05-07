@@ -2362,44 +2362,45 @@ function applyEditedImg(){
   if(!_ie.img) return;
 
   var x = _ie.cropX, y = _ie.cropY, w = _ie.cropW, h = _ie.cropH;
-  var naturalW = _ie.img.naturalWidth || _ie.img.width;
-  var naturalH = _ie.img.naturalHeight || _ie.img.height;
+  var imgW = _ie.img.naturalWidth || _ie.img.width;
+  var imgH = _ie.img.naturalHeight || _ie.img.height;
 
-  // A tela do editor continua sendo 640x320, mas a saída agora é gerada
-  // em alta resolução proporcional à imagem original.
-  var displayW = 640;
-  var displayH = 320;
-  var qualityScale = Math.max(naturalW / displayW, naturalH / displayH, 1);
+  // Fator de qualidade: renderiza o recorte em cima da imagem original,
+  // não em cima do canvas pequeno de preview (640x320).
+  var qualityScale = Math.max(imgW / 640, imgH / 320);
+  qualityScale = Math.max(1, Math.min(qualityScale, 6));
 
   var out = document.createElement('canvas');
-  out.width = Math.max(1, Math.round(w * qualityScale));
-  out.height = Math.max(1, Math.round(h * qualityScale));
+  out.width = Math.round(w * qualityScale);
+  out.height = Math.round(h * qualityScale);
 
   var octx = out.getContext('2d');
   octx.imageSmoothingEnabled = true;
   octx.imageSmoothingQuality = 'high';
 
+  octx.save();
+  octx.scale(qualityScale, qualityScale);
+
   if(_ie.shape === 'circle'){
-    octx.save();
     octx.beginPath();
-    octx.arc(out.width / 2, out.height / 2, Math.min(out.width, out.height) / 2, 0, Math.PI * 2);
+    octx.arc(w/2, h/2, Math.min(w,h)/2, 0, Math.PI*2);
     octx.clip();
   }
 
-  octx.save();
-  octx.scale(qualityScale, qualityScale);
+  octx.filter = 'brightness(' + (100 + (_ie.bright || 0)) + '%)';
+
+  // Move a área de crop para a origem e redesenha a cena original
+  // com o mesmo zoom, rotação e offset usados no editor.
   octx.translate(-x, -y);
-  octx.filter = 'brightness(' + (100 + _ie.bright) + '%)';
-  octx.translate(displayW / 2 + _ie.offsetX, displayH / 2 + _ie.offsetY);
-  octx.rotate(_ie.rotate * Math.PI / 180);
+  octx.translate(320 + (_ie.offsetX || 0), 160 + (_ie.offsetY || 0));
+  octx.rotate(((_ie.rotate || 0) * Math.PI) / 180);
 
-  var scale = _ie.zoom / 100;
-  var drawW = naturalW * scale;
-  var drawH = naturalH * scale;
-  octx.drawImage(_ie.img, -drawW / 2, -drawH / 2, drawW, drawH);
+  var scale = (_ie.zoom || 100) / 100;
+  var drawW = imgW * scale;
+  var drawH = imgH * scale;
+
+  octx.drawImage(_ie.img, -drawW/2, -drawH/2, drawW, drawH);
   octx.restore();
-
-  if(_ie.shape === 'circle') octx.restore();
 
   var dataUrl = out.toDataURL('image/png');
   if(_ie.callback) _ie.callback(dataUrl, _ie.callbackKey);
