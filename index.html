@@ -4,6 +4,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>St. Jones — Burgers and Fries</title>
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+<meta name="theme-color" content="#1a73c8">
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link href="file:///C:/Users/User/Downloads/index_files/css2" rel="stylesheet">
 <script src="./index_files/supabase-js@2"></script>
@@ -479,6 +483,23 @@ img{max-width:100%;height:auto}
   .franquia-banner-grid > div:last-child > div{
     padding:.85rem .9rem !important;
     gap:.75rem !important;
+  }
+}
+
+/* Ajuste final: categorias centralizadas no desktop e com rolagem no mobile */
+.cats-inner{
+  width:max-content;
+  min-width:100%;
+  margin:0 auto;
+  justify-content:center;
+  align-items:flex-start;
+}
+@media(max-width:768px){
+  .cats-inner{
+    justify-content:flex-start;
+    min-width:max-content;
+    padding-left:.8rem;
+    padding-right:.8rem;
   }
 }
 
