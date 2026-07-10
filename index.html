@@ -719,8 +719,8 @@ img{max-width:100%;height:auto}
             </div>
           </div>
           <div class="frow">
-            <div class="fgroup"><label>Abertura (horas, ex: 17)</label><input type="number" id="l1-abre" value="17" min="0" max="23"></div>
-            <div class="fgroup"><label>Fechamento (horas, ex: 23)</label><input type="number" id="l1-fecha" value="23" min="0" max="24"></div>
+            <div class="fgroup"><label>Abertura</label><input type="time" id="l1-abre" value="17:00" step="1800"></div>
+            <div class="fgroup"><label>Fechamento</label><input type="time" id="l1-fecha" value="23:00" step="1800"></div>
           </div>
           <div class="frow full">
             <div class="fgroup"><label>Dias abertos</label>
@@ -766,8 +766,8 @@ img{max-width:100%;height:auto}
             </div>
           </div>
           <div class="frow">
-            <div class="fgroup"><label>Abertura (horas)</label><input type="number" id="l2-abre" value="13" min="0" max="23"></div>
-            <div class="fgroup"><label>Fechamento (horas, use 27 para 3h do dia seguinte)</label><input type="number" id="l2-fecha" value="27" min="0" max="30"></div>
+            <div class="fgroup"><label>Abertura</label><input type="time" id="l2-abre" value="13:00" step="1800"></div>
+            <div class="fgroup"><label>Fechamento</label><input type="time" id="l2-fecha" value="03:30" step="1800"></div>
           </div>
           <div class="frow full">
             <div class="fgroup"><label>Dias abertos</label>
@@ -813,8 +813,8 @@ img{max-width:100%;height:auto}
             </div>
           </div>
           <div class="frow">
-            <div class="fgroup"><label>Abertura (horas)</label><input type="number" id="l3-abre" value="13" min="0" max="23"></div>
-            <div class="fgroup"><label>Fechamento (horas)</label><input type="number" id="l3-fecha" value="22" min="0" max="30"></div>
+            <div class="fgroup"><label>Abertura</label><input type="time" id="l3-abre" value="13:00" step="1800"></div>
+            <div class="fgroup"><label>Fechamento</label><input type="time" id="l3-fecha" value="22:00" step="1800"></div>
           </div>
           <div class="frow full">
             <div class="fgroup"><label>Dias abertos</label>
@@ -1060,9 +1060,9 @@ img{max-width:100%;height:auto}
   <div class="hero-content">
     <h1 class="hero-h1" id="heroH1El">Como você quer seu pedido hoje?</h1>
     <div class="hero-actions">
-      <a href="file:///C:/Users/User/Downloads/index_8.html#lojas" class="hero-btn" id="heroBtn1El">
+      <a href="#lojas" class="hero-btn" id="heroBtn1El">
         <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg> Peça e Retire</a>
-      <a href="file:///C:/Users/User/Downloads/index_8.html#lojas" class="hero-btn" id="heroBtn2El">
+      <a href="#lojas" class="hero-btn" id="heroBtn2El">
         <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"></path></svg> Delivery</a>
     </div>
   </div>
@@ -1359,6 +1359,31 @@ Osasco, Vila Mariana e Tatuapé.</p>
 
 <script>
 // Detecção de lojas abertas/fechadas no horário de Brasília
+function timeToMinutes(value, fallback){
+  if(typeof value === 'number'){
+    const normalized = ((value % 24) + 24) % 24;
+    return normalized * 60;
+  }
+  if(typeof value === 'string'){
+    if(/^\d{1,2}:\d{2}$/.test(value)){
+      const [h,m] = value.split(':').map(Number);
+      return h * 60 + m;
+    }
+    if(/^\d+(?:\.\d+)?$/.test(value)){
+      const n = Number(value);
+      return Math.round((((n % 24) + 24) % 24) * 60);
+    }
+  }
+  return fallback;
+}
+
+function timeForInput(value, fallback){
+  const total = timeToMinutes(value, timeToMinutes(fallback, 0));
+  const h = String(Math.floor(total / 60) % 24).padStart(2,'0');
+  const m = String(total % 60).padStart(2,'0');
+  return h + ':' + m;
+}
+
 function checkLojas(){
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/Sao_Paulo',
@@ -1379,32 +1404,34 @@ function checkLojas(){
       : '<span style="width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;display:inline-block"></span><span style="color:#dc2626">Fechado</span>';
   }
 
-  // Aceita horários normais e horários que atravessam a meia-noite.
-  // Em horários de madrugada, considera corretamente o expediente iniciado no dia anterior.
   function isOpen(openDays, openingMinutes, closingMinutes){
+    if(openingMinutes === closingMinutes) return openDays.includes(day);
     if(closingMinutes > openingMinutes){
       return openDays.includes(day) && t >= openingMinutes && t < closingMinutes;
     }
-
     const previousDay = (day + 6) % 7;
     return (openDays.includes(day) && t >= openingMinutes)
       || (openDays.includes(previousDay) && t < closingMinutes);
   }
 
-  // OSASCO: quarta a domingo, das 17h às 23h
-  const osascoOpen = isOpen([0,3,4,5,6], 17*60, 23*60);
-  document.getElementById('status-osasco').innerHTML = badge(osascoOpen);
+  const defaults = [
+    {dias:[0,3,4,5,6], abre:'17:00', fecha:'23:00'},
+    {dias:[0,1,2,3,4,5,6], abre:'13:00', fecha:'03:30'},
+    {dias:[0,1,2,3,4,5,6], abre:'13:00', fecha:'22:00'}
+  ];
+  const ids = ['osasco','vilamariana','tatuape'];
 
-  // VILA MARIANA:
-  // segunda e terça, das 13h às 22h
-  // quarta a domingo, das 13h às 03h30 do dia seguinte
-  const vmOpen = isOpen([1,2], 13*60, 22*60)
-    || isOpen([0,3,4,5,6], 13*60, 3*60+30);
-  document.getElementById('status-vilamariana').innerHTML = badge(vmOpen);
-
-  // TATUAPÉ: todos os dias, das 13h às 22h
-  const tatuOpen = isOpen([0,1,2,3,4,5,6], 13*60, 22*60);
-  document.getElementById('status-tatuape').innerHTML = badge(tatuOpen);
+  ids.forEach((id,index)=>{
+    const saved = S && S.lojas && S.lojas[index] ? S.lojas[index] : {};
+    const cfg = Object.assign({}, defaults[index], saved);
+    const open = isOpen(
+      Array.isArray(cfg.dias) ? cfg.dias : defaults[index].dias,
+      timeToMinutes(cfg.abre, timeToMinutes(defaults[index].abre,0)),
+      timeToMinutes(cfg.fecha, timeToMinutes(defaults[index].fecha,0))
+    );
+    const el = document.getElementById('status-'+id);
+    if(el) el.innerHTML = badge(open);
+  });
 }
 
 checkLojas();
@@ -2083,8 +2110,8 @@ function saveLoja(n){
     plat: document.getElementById('l'+n+'-plat').value,
     end:  document.getElementById('l'+n+'-end').value,
     horario: document.getElementById('l'+n+'-horario').value,
-    abre: parseInt(document.getElementById('l'+n+'-abre').value),
-    fecha: parseInt(document.getElementById('l'+n+'-fecha').value),
+    abre: document.getElementById('l'+n+'-abre').value,
+    fecha: document.getElementById('l'+n+'-fecha').value,
     dias: dias,
     link: document.getElementById('l'+n+'-link').value,
   };
@@ -2124,8 +2151,8 @@ function renderAdminLojas(){
     set('l'+n+'-nome', l.nome);
     set('l'+n+'-end', l.end);
     set('l'+n+'-horario', l.horario);
-    set('l'+n+'-abre', l.abre);
-    set('l'+n+'-fecha', l.fecha);
+    set('l'+n+'-abre', timeForInput(l.abre, n===1?'17:00':'13:00'));
+    set('l'+n+'-fecha', timeForInput(l.fecha, n===1?'23:00':(n===2?'03:30':'22:00')));
     set('l'+n+'-link', l.link);
     if(l.plat){const sel=document.getElementById('l'+n+'-plat');if(sel)sel.value=l.plat;}
     [0,1,2,3,4,5,6].forEach(d=>{
