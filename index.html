@@ -1358,13 +1358,20 @@ Osasco, Vila Mariana e Tatuapé.</p>
 </div>
 
 <script>
-// Smart open/closed detection (Brasilia timezone)
+// Detecção de lojas abertas/fechadas no horário de Brasília
 function checkLojas(){
-  const now = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Sao_Paulo'}));
-  const day = now.getDay(); // 0=dom,1=seg,...,6=sab
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const t = h * 60 + m; // minutos desde meia-noite
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Sao_Paulo',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23'
+  }).formatToParts(new Date());
+
+  const value = type => parts.find(part => part.type === type)?.value;
+  const dayMap = {Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6};
+  const day = dayMap[value('weekday')];
+  const t = Number(value('hour')) * 60 + Number(value('minute'));
 
   function badge(open){
     return open
@@ -1372,24 +1379,36 @@ function checkLojas(){
       : '<span style="width:7px;height:7px;border-radius:50%;background:#dc2626;flex-shrink:0;display:inline-block"></span><span style="color:#dc2626">Fechado</span>';
   }
 
-  // OSASCO: qua(3) a dom(0) 17h-23h
-  const osascoOpen = [0,3,4,5,6].includes(day) && t >= 17*60 && t < 23*60;
+  // Aceita horários normais e horários que atravessam a meia-noite.
+  // Em horários de madrugada, considera corretamente o expediente iniciado no dia anterior.
+  function isOpen(openDays, openingMinutes, closingMinutes){
+    if(closingMinutes > openingMinutes){
+      return openDays.includes(day) && t >= openingMinutes && t < closingMinutes;
+    }
+
+    const previousDay = (day + 6) % 7;
+    return (openDays.includes(day) && t >= openingMinutes)
+      || (openDays.includes(previousDay) && t < closingMinutes);
+  }
+
+  // OSASCO: quarta a domingo, das 17h às 23h
+  const osascoOpen = isOpen([0,3,4,5,6], 17*60, 23*60);
   document.getElementById('status-osasco').innerHTML = badge(osascoOpen);
 
   // VILA MARIANA:
-  // seg(1) e ter(2): 13h-22h
-  // qua(3) a dom(0): 13h-03h30 (passa meia-noite)
-  let vmOpen = false;
-  if([1,2].includes(day)) vmOpen = t >= 13*60 && t < 22*60;
-  else if([3,4,5,6].includes(day)) vmOpen = t >= 13*60; // abre 13h vai ate 3:30 do dia seguinte
-  else if(day === 0) vmOpen = t < 3*60+30 || t >= 13*60; // domingo: madrugada (vindo do sab) ou tarde
+  // segunda e terça, das 13h às 22h
+  // quarta a domingo, das 13h às 03h30 do dia seguinte
+  const vmOpen = isOpen([1,2], 13*60, 22*60)
+    || isOpen([0,3,4,5,6], 13*60, 3*60+30);
   document.getElementById('status-vilamariana').innerHTML = badge(vmOpen);
 
-  // TATUAPÉ: seg(1) a dom(0) 13h-22h
-  const tatuOpen = t >= 13*60 && t < 22*60;
+  // TATUAPÉ: todos os dias, das 13h às 22h
+  const tatuOpen = isOpen([0,1,2,3,4,5,6], 13*60, 22*60);
   document.getElementById('status-tatuape').innerHTML = badge(tatuOpen);
 }
+
 checkLojas();
+setInterval(checkLojas, 60 * 1000);
 </script>
 
 
